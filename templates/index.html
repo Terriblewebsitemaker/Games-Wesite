@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Start My Education</title>
+  <title>Proest Learning</title>
   <meta name="description" content="A modern interactive learning platform with featured courses, practice challenges, and polished UI." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,7 +13,7 @@
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="#home">Start My Education</a>
+      <a class="brand" href="#home">Proest Learning</a>
       <button id="mobileToggle" class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
         <span></span>
         <span></span>
@@ -27,6 +27,7 @@
         <a href="/contact">Contact</a>
       </nav>
       <div class="header-actions">
+        <button id="loginBtn" class="btn btn-outline">Login</button>
         <button id="getStartedBtn" class="btn btn-primary">Get Started</button>
       </div>
     </div>
@@ -37,7 +38,7 @@
       <div class="hero-overlay"></div>
       <div class="container hero-inner">
         <div class="hero-copy animate-fade-up">
-          <span class="eyebrow">Start My Education</span>
+          <span class="eyebrow">Proest Learning</span>
           <h1>Learn smarter, practice faster, and own your progress.</h1>
           <p class="hero-description">A modern learning platform with polished courses, community support, and interactive practice that feels like a premium education experience.</p>
           <div class="hero-actions">
@@ -194,16 +195,7 @@
       </div>
     </section>
 
-    <section id="pro-area" class="section pro-area hidden" aria-hidden="true" aria-labelledby="pro-heading">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-label">Practice Zone</span>
-          <h2 id="pro-heading">Unlock the Pro Area</h2>
-          <p>Enter the password <strong>ampro</strong> in the login form to reveal extra practice cards and challenges.</p>
-        </div>
-        <div id="pro-games" class="games-grid"></div>
-      </div>
-    </section>
+    <!-- Pro Area moved to separate page (pro.html). Not present here to prevent accidental exposure. -->
 
     <section class="section contact-section" id="contact">
       <div class="container contact-grid">
@@ -228,7 +220,7 @@
 
   <footer class="site-footer footer-dark">
     <div class="container footer-inner">
-      <p>Start My Education — modern learning for curious minds.</p>
+      <p>Proest Learning — modern learning for curious minds.</p>
       <div class="footer-links">
         <a href="#contact">Contact</a>
         <a href="/about">About</a>

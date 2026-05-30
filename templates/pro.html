@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pro Area — Practice Zone</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pro.css') }}">
+</head>
+<body>
+  <main>
+    <div id="accessDenied" class="access-denied hidden">
+      <h2>Access Denied</h2>
+      <p>You do not have permission to view this page. Redirecting to the homepage…</p>
+    </div>
+
+    <div id="proRoot" class="pro-root hidden" aria-hidden="true">
+      <header class="pro-header">
+        <h1>Pro Dashboard</h1>
+        <div class="pro-actions">
+          <button id="closeBtn" class="btn btn-outline">Close</button>
+        </div>
+      </header>
+
+      <section class="pro-grid">
+        <!-- Example game cards; real content goes here -->
+        <div class="games-grid" id="gamesGrid"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/pro.js') }}"></script>
+</body>
+</html>

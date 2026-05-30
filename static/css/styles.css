@@ -51,6 +51,16 @@ a.btn {
   font: inherit;
 }
 
+.btn-outline {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
 .site-header {
   position: sticky;
   top: 0;
@@ -238,6 +248,65 @@ a.btn {
   box-shadow: 0 40px 80px rgba(15, 23, 42, 0.25);
   backdrop-filter: blur(18px);
 }
+
+.login-section {
+  padding: 100px 0 120px;
+  min-height: calc(100vh - 110px);
+}
+
+.auth-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 32px;
+  box-shadow: 0 30px 70px rgba(15, 23, 42, 0.12);
+  padding: 36px;
+}
+
+.alert {
+  border-radius: 18px;
+  padding: 18px 20px;
+  margin: 18px 0 0;
+}
+
+.alert-success {
+  background: #d1fae5;
+  border: 1px solid #a7f3d0;
+  color: #115e59;
+}
+
+.alert-error {
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+/* Pro Area styles and transitions */
+.pro-area {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 420ms ease, transform 420ms ease;
+}
+
+.pro-area.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pro-area .games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.course-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 18px;
+  border-radius: 14px;
+}
+
+/* Keep hidden sections inaccessible until unlocked */
+.hidden { display: none !important; }
 
 .hero-icon {
   width: 72px;

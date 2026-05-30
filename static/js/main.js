@@ -1,5 +1,6 @@
 ﻿document.addEventListener('DOMContentLoaded', () => {
-  const loginBtn = document.getElementById('getStartedBtn');
+  const loginBtn = document.getElementById('loginBtn');
+  const getStartedBtn = document.getElementById('getStartedBtn');
   const heroStartBtn = document.getElementById('heroStartBtn');
   const loginModal = document.getElementById('loginModal');
   const modalClose = document.getElementById('modalClose');
@@ -9,15 +10,13 @@
   const termsLinks = document.querySelectorAll('#termsLink, #termsLinkFooter');
   const popup = document.getElementById('popup');
   const closePopup = document.getElementById('close-popup');
-  const proArea = document.getElementById('pro-area');
-  const proGames = document.getElementById('pro-games');
+  // Pro Area moved to separate page (pro.html); no in-page elements.
   const mobileToggle = document.getElementById('mobileToggle');
   const mainNav = document.querySelector('.main-nav');
   const animatedElements = document.querySelectorAll('.animate-fade-up, .animate-slide-up, .animate-slide-right, .animate-slide-left, .animate-scale-in');
   const counters = document.querySelectorAll('.count');
 
   const SECRET = 'ampro';
-  const STORAGE_KEY = 'pro_area_unlocked';
 
   function openModal() {
     if (!loginModal) return;
@@ -26,6 +25,8 @@
     const username = document.getElementById('username');
     if (username) username.focus();
   }
+
+  // No-op: Pro Area is on a separate page.
 
   function closeModal() {
     if (!loginModal) return;
@@ -51,6 +52,7 @@
   }
 
   if (loginBtn) loginBtn.addEventListener('click', openModal);
+  if (getStartedBtn) getStartedBtn.addEventListener('click', openModal);
   if (heroStartBtn) heroStartBtn.addEventListener('click', openModal);
   if (modalClose) modalClose.addEventListener('click', closeModal);
   if (modalCancel) modalCancel.addEventListener('click', closeModal);
@@ -73,67 +75,47 @@
   }
 
   if (loginForm) {
+    const errorEl = document.createElement('div');
+    errorEl.id = 'loginError';
+    errorEl.style.color = '#ff4d4f';
+    errorEl.style.marginTop = '12px';
+    loginForm.appendChild(errorEl);
+
+    // Handle submit: validate code and open pro page via postMessage (in-memory only)
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const pwd = (document.getElementById('password') || {}).value || '';
-      if (pwd === SECRET) {
-        unlockProArea();
-        closeModal();
+      if (pwd.trim().toLowerCase() === SECRET) {
+        // Open pro page in a new window/tab and send a one-time in-memory message
+        const proWin = window.open('/pro', '_blank');
+        if (!proWin) {
+          errorEl.textContent = 'Popup blocked. Please allow popups and try again.';
+          return;
+        }
+        // Post a short delay to ensure the new window is ready to receive messages
+        setTimeout(() => {
+          try {
+            proWin.postMessage({ type: 'proAccess', code: SECRET }, location.origin);
+          } catch (err) {
+            // If posting fails, notify user
+            errorEl.textContent = 'Could not open Pro Area. Please try again.';
+            return;
+          }
+          // Show a brief success animation/message in the current page
+          errorEl.style.color = '#16a34a';
+          errorEl.textContent = 'Access granted — opening Pro Area...';
+          // Close modal shortly after
+          setTimeout(() => closeModal(), 600);
+        }, 200);
         return;
       }
-      closeModal();
-      alert('Logged in (mock). Enter the special password to reveal the Pro Area.');
+      errorEl.textContent = 'Incorrect code — please try again.';
     });
   }
 
-  function unlockProArea() {
-    if (!proArea) return;
-    proArea.classList.remove('hidden');
-    proArea.setAttribute('aria-hidden', 'false');
-    localStorage.setItem(STORAGE_KEY, 'true');
-    if (proGames) {
-      generateGameCards(120);
-    }
-  }
+  // No in-page Pro Area handling — pro page is separate and receives an in-memory message.
 
-  if (localStorage.getItem(STORAGE_KEY) === 'true') {
-    unlockProArea();
-  }
-
-  function generateGameCards(count) {
-    if (!proGames) return;
-    proGames.innerHTML = '';
-    const fragment = document.createDocumentFragment();
-
-    for (let i = 1; i <= count; i += 1) {
-      const title = `Game ${i}`;
-      const desc = `Short description for ${title}. Fun learning challenge ${i}.`;
-      const card = document.createElement('article');
-      card.className = 'course-card';
-
-      const h3 = document.createElement('h3');
-      h3.textContent = title;
-      card.appendChild(h3);
-
-      const p = document.createElement('p');
-      p.textContent = desc;
-      card.appendChild(p);
-
-      const playBtn = document.createElement('button');
-      playBtn.className = 'btn btn-primary';
-      playBtn.textContent = 'Play';
-      playBtn.addEventListener('click', () => {
-        const w = window.open('', '_blank');
-        if (w) {
-          w.document.write(`<h1>${title}</h1><p>${desc}</p>`);
-        }
-      });
-      card.appendChild(playBtn);
-      fragment.appendChild(card);
-    }
-
-    proGames.appendChild(fragment);
-  }
+  // Nothing else required for Pro Area on index page.
 
   function animateCounters(entries, observer) {
     entries.forEach((entry) => {
