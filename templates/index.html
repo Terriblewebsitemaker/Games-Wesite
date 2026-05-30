@@ -1,23 +1,277 @@
-<!DOCTYPE html>
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Start My Education</title>
+  <meta name="description" content="A modern interactive learning platform with featured courses, practice challenges, and polished UI." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#home">Start My Education</a>
+      <button id="mobileToggle" class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="main-nav" aria-label="Primary navigation">
+        <a href="#home" class="active">Home</a>
+        <a href="#courses">Courses</a>
+        <a href="#practice">Practice</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button id="getStartedBtn" class="btn btn-primary">Get Started</button>
+      </div>
+    </div>
+  </header>
 
-<html>
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-overlay"></div>
+      <div class="container hero-inner">
+        <div class="hero-copy animate-fade-up">
+          <span class="eyebrow">Start My Education</span>
+          <h1>Learn smarter, practice faster, and own your progress.</h1>
+          <p class="hero-description">A modern learning platform with polished courses, community support, and interactive practice that feels like a premium education experience.</p>
+          <div class="hero-actions">
+            <button id="heroStartBtn" class="btn btn-primary">Get Started</button>
+            <a class="btn btn-secondary" href="#courses">Explore Courses</a>
+          </div>
+          <div class="hero-pill-grid">
+            <div class="pill">
+              <strong>1.2K+</strong>
+              <span>Active learners</span>
+            </div>
+            <div class="pill">
+              <strong>45</strong>
+              <span>Professional courses</span>
+            </div>
+            <div class="pill">
+              <strong>98%</strong>
+              <span>Course completion</span>
+            </div>
+          </div>
+        </div>
 
+        <div class="hero-panel animate-fade-up">
+          <div class="hero-card glass-card">
+            <div class="hero-icon floating-icon" aria-hidden="true">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7l10 5 10-5-10-5z" fill="#0ea5e9" />
+                <path d="M12 13l-10-5v5c0 5.5 4.5 10 10 10s10-4.5 10-10v-5l-10 5z" fill="#2563eb" opacity="0.95" />
+                <path d="M9 11.5l3 1.5 3-1.5V9l-3 1.5L9 9v2.5z" fill="#fff" opacity="0.85" />
+              </svg>
+            </div>
+            <h2>Designed for learners who love clarity and momentum.</h2>
+            <p>Explore professional course structures, engaging challenge paths, and a dashboard-inspired layout that keeps every lesson easy to follow.</p>
+            <div class="hero-card-list">
+              <div>
+                <strong>Interactive practice</strong>
+                <span>Track your growth with live progress updates.</span>
+              </div>
+              <div>
+                <strong>Community support</strong>
+                <span>Connect, collaborate, and learn together.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wave-divider" aria-hidden="true">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none"><path d="M0,32L60,48C120,64,240,96,360,90.7C480,85,600,43,720,53.3C840,64,960,128,1080,144C1200,160,1320,128,1380,112L1440,96L1440,120L1380,120C1320,120,1200,120,1080,120C960,120,840,120,720,120C600,120,480,120,360,120C240,120,120,120,60,120L0,120Z" fill="#ffffff"></path></svg>
+      </div>
+    </section>
 
-    <head>
-        <style>
-            body{
-                background-color: teal;
-                text-align: center;
-            }
-        </style>
+    <section class="section featured-courses" id="courses">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Featured Courses</span>
+          <h2>Courses that help you build, practice, and improve.</h2>
+          <p>Explore curated learning paths with interactive challenges and strong skill-building outcomes.</p>
+        </div>
+        <div class="grid cards-grid">
+          <article class="course-card animate-slide-up">
+            <img class="course-thumb" loading="lazy" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='400'%3E%3Crect width='640' height='400' fill='%233b82f6'/%3E%3Cpath d='M80 320L240 200L400 320L560 170' stroke='%23ffffff' stroke-width='18' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" alt="Interactive Python course artwork">
+            <div class="course-card-content">
+              <span class="course-tag">Beginner</span>
+              <h3>Interactive Python</h3>
+              <p>Learn Python through guided projects, quizzes, and real-world examples.</p>
+              <button class="btn btn-primary">Start course</button>
+            </div>
+          </article>
 
-    </head>
+          <article class="course-card animate-slide-up delay-1">
+            <img class="course-thumb" loading="lazy" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='400'%3E%3Crect width='640' height='400' fill='%232d72f2'/%3E%3Ccircle cx='320' cy='200' r='100' fill='%23eff6ff'/%3E%3C/svg%3E" alt="Design fundamentals course artwork">
+            <div class="course-card-content">
+              <span class="course-tag">Intermediate</span>
+              <h3>Design Fundamentals</h3>
+              <p>Build polished visuals and interfaces with modern design principles.</p>
+              <button class="btn btn-primary">Start course</button>
+            </div>
+          </article>
 
+          <article class="course-card animate-slide-up delay-2">
+            <img class="course-thumb" loading="lazy" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='400'%3E%3Crect width='640' height='400' fill='%231d3d8b'/%3E%3Cpath d='M160 280C220 180 320 140 420 200C520 260 560 300 600 240' stroke='%23dbeafe' stroke-width='24' stroke-linecap='round'/%3E%3C/svg%3E" alt="Practice challenges course artwork">
+            <div class="course-card-content">
+              <span class="course-tag">Advanced</span>
+              <h3>Practice Challenges</h3>
+              <p>Sharpen your skills with timed tasks, review loops, and hands-on exercises.</p>
+              <button class="btn btn-primary">Start course</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-    <body>
-        <h1 style="background-color: orange;">this is my gaming website</h1>
-        <h2 style="color:gray">this is made for people to play games..</h2>
-        
-    </body>
+    <section class="section surface-section" id="practice">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Why Choose Us</span>
+          <h2>Everything you need for consistent progress.</h2>
+          <p>From free learning to interactive practice, this platform is designed to support every step of your education journey.</p>
+        </div>
+        <div class="grid feature-grid">
+          <article class="feature-card animate-slide-right">
+            <div class="feature-icon">📚</div>
+            <h3>Free Learning</h3>
+            <p>Access high-quality lessons without hidden costs and learn on your own schedule.</p>
+          </article>
+          <article class="feature-card animate-slide-right delay-1">
+            <div class="feature-icon">⚡</div>
+            <h3>Interactive Practice</h3>
+            <p>Practice concepts instantly with challenges that adapt to your pace.</p>
+          </article>
+          <article class="feature-card animate-slide-left delay-2">
+            <div class="feature-icon">🤝</div>
+            <h3>Community Support</h3>
+            <p>Join learners, share tips, and keep motivation high with group feedback.</p>
+          </article>
+          <article class="feature-card animate-slide-left delay-3">
+            <div class="feature-icon">📈</div>
+            <h3>Progress Tracking</h3>
+            <p>Stay on track with clear milestones, course badges, and performance metrics.</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
+    <section class="section stats-section">
+      <div class="container stats-grid">
+        <div class="stat-card animate-fade-up">
+          <strong class="count" data-target="12400">0</strong>
+          <span>Students</span>
+        </div>
+        <div class="stat-card animate-fade-up delay-1">
+          <strong class="count" data-target="260">0</strong>
+          <span>Lessons</span>
+        </div>
+        <div class="stat-card animate-fade-up delay-2">
+          <strong class="count" data-target="45">0</strong>
+          <span>Courses</span>
+        </div>
+        <div class="stat-card animate-fade-up delay-3">
+          <strong class="count" data-target="1280">0</strong>
+          <span>Practice problems</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section quote-section">
+      <div class="container quote-card glass-card animate-scale-in">
+        <div class="quote-copy">
+          <span class="section-label">Learner Spotlight</span>
+          <h2>“This platform feels like a premium course experience with practice built in.”</h2>
+          <p>From onboarding to progress tracking, the polished layout and subtle motion make learning feel motivating and easy to return to.</p>
+          <strong>— Avery, aspiring developer</strong>
+        </div>
+      </div>
+    </section>
+
+    <section id="pro-area" class="section pro-area hidden" aria-hidden="true" aria-labelledby="pro-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Practice Zone</span>
+          <h2 id="pro-heading">Unlock the Pro Area</h2>
+          <p>Enter the password <strong>ampro</strong> in the login form to reveal extra practice cards and challenges.</p>
+        </div>
+        <div id="pro-games" class="games-grid"></div>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contact">
+      <div class="container contact-grid">
+        <div class="contact-copy animate-fade-up">
+          <span class="section-label">Get in touch</span>
+          <h2>Questions, feedback, or new course ideas?</h2>
+          <p>Reach out anytime and we’ll help you connect with the learning experience.</p>
+          <a class="contact-link" href="mailto:hello@learnhub.example">hello@learnhub.example</a>
+        </div>
+        <div class="contact-card glass-card animate-scale-in delay-1">
+          <h3>Stay connected</h3>
+          <p>Follow us for updates, new releases, and community events.</p>
+          <div class="contact-links">
+            <a href="https://discord.gg/fJxmmchjuR">Discord</a>
+            <a href="https://twitter.com/">Twitter</a>
+            <a href="https://snubby.top">Portfolio</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer footer-dark">
+    <div class="container footer-inner">
+      <p>Start My Education — modern learning for curious minds.</p>
+      <div class="footer-links">
+        <a href="#contact">Contact</a>
+        <a href="/about">About</a>
+        <a href="#terms" id="termsLinkFooter">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="popup" class="popup-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="popupTitle">
+    <div class="popup-content">
+      <h1 id="popupTitle">Terms of Service</h1>
+      <p>Welcome! Before you start "learning" (aka clicking buttons and exploring challenges), you agree to the following:</p>
+      <ol>
+        <li><strong>Usage:</strong> This platform is <u>not</u> an accredited institution. It is a polished learning demo experience.</li>
+        <li><strong>Content:</strong> Some lessons are educational. Most are designed to improve your skills and confidence.</li>
+        <li><strong>Intellectual Property:</strong> Content remains the property of its creators. Use responsibly.</li>
+        <li><strong>Third-Party Links:</strong> External references may be included, but are not maintained by this site.</li>
+        <li><strong>Disclaimer:</strong> This is not professional advice. Use the site for skill-building and inspiration.</li>
+        <li><strong>Changes:</strong> Terms may be updated anytime to improve the experience.</li>
+        <li><strong>User info:</strong> Minimal metadata may be collected for analytics and feature support.</li>
+      </ol>
+      <button id="close-popup" class="btn btn-outline">Close</button>
+    </div>
+  </div>
+
+  <div id="loginModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-panel" role="document">
+      <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+      <h3 id="loginTitle">Login</h3>
+      <form id="loginForm">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" placeholder="yourname">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" placeholder="password" required>
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="button" class="btn btn-outline" id="modalCancel">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
 </html>

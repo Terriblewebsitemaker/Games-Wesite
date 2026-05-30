@@ -15,7 +15,7 @@ def about():
 
 @app.route("/contact")
 def contact():
-    return "My Contact Page!"
+    return render_template("contact.html")
 
 
 @app.route("/login")
@@ -23,4 +23,5 @@ def login():
     return "Login Here!"
 
 
-app.run()
+if __name__ == "__main__":
+    app.run(debug=True)
