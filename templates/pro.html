@@ -16,17 +16,124 @@
 
     <div id="proRoot" class="pro-root hidden" aria-hidden="true">
       <header class="pro-header">
-        <h1>Pro Dashboard</h1>
+        <div class="pro-header-content">
+          <h1>🎮 Pro Game Launcher</h1>
+          <p class="pro-subtitle">Select a game to play or continue your progress</p>
+        </div>
         <div class="pro-actions">
-          <button id="closeBtn" class="btn btn-outline">Close</button>
+          <button id="closeBtn" class="btn btn-outline">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+            Exit Pro Area
+          </button>
         </div>
       </header>
 
-      <section class="pro-grid">
-        <!-- Example game cards; real content goes here -->
-        <div class="games-grid" id="gamesGrid"></div>
+      <!-- Game Selection Section -->
+      <section id="gameSelection" class="game-selection-section">
+        <div class="section-header">
+          <h2>Available Games</h2>
+          <div class="scroll-hints">
+            <span class="scroll-hint">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+              Scroll to explore
+            </span>
+          </div>
+        </div>
+        <div class="games-carousel-wrapper">
+          <div class="games-carousel" id="gamesGrid">
+            <!-- Game cards will be populated by JavaScript -->
+          </div>
+          <div class="carousel-scrollbar">
+            <div class="carousel-scrollbar-inner"></div>
+          </div>
+        </div>
+
+        <!-- Action Button Bar -->
+        <div class="action-bar">
+          <div class="action-buttons">
+            <button class="action-btn" data-panel="settings" aria-label="Settings" title="Settings">
+              <span class="action-btn-icon">⚙️</span>
+              <span class="action-btn-tooltip">Settings</span>
+            </button>
+            <button class="action-btn" data-panel="help" aria-label="Help" title="Help">
+              <span class="action-btn-icon">❓</span>
+              <span class="action-btn-tooltip">Help</span>
+            </button>
+            <button class="action-btn" data-panel="chat" aria-label="Chat" title="Chat">
+              <span class="action-btn-icon">💬</span>
+              <span class="action-btn-tooltip">Chat</span>
+            </button>
+            <button class="action-btn" data-panel="store" aria-label="Store" title="Store">
+              <span class="action-btn-icon">🛍️</span>
+              <span class="action-btn-tooltip">Store</span>
+            </button>
+            <button class="action-btn" data-panel="community" aria-label="Community" title="Community">
+              <span class="action-btn-icon">🌐</span>
+              <span class="action-btn-tooltip">Community</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Game Viewer Section -->
+      <section id="gameViewer" class="game-viewer-section hidden">
+        <div class="game-viewer-header">
+          <div class="game-viewer-info">
+            <button id="backToGames" class="btn btn-ghost">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              Back to Games
+            </button>
+            <h3 id="currentGameTitle">Game Title</h3>
+          </div>
+          <div class="game-viewer-actions">
+            <button id="closeGameBtn" class="btn btn-outline btn-sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+              </svg>
+              Close Game
+            </button>
+          </div>
+        </div>
+        <div class="game-viewer-container">
+          <div class="game-viewer-frame-wrapper">
+            <iframe id="gameFrame" class="game-viewer-iframe" src="" title="Game Viewer" sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock"></iframe>
+            <div class="game-viewer-loading" id="gameLoading">
+              <div class="loading-spinner"></div>
+              <p>Loading game...</p>
+            </div>
+          </div>
+        </div>
+        <div class="game-viewer-footer">
+          <span class="game-tip">💡 Tip: Press <kbd>ESC</kbd> to quickly return to game selection</span>
+        </div>
       </section>
     </div>
+
+    <!-- Slide-out Panel Overlay -->
+    <div id="panelOverlay" class="panel-overlay hidden"></div>
+
+    <!-- Slide-out Panels -->
+    <aside id="slidePanel" class="slide-panel" role="complementary" aria-hidden="true">
+      <div class="slide-panel-header">
+        <h3 id="panelTitle">Panel Title</h3>
+        <button id="closePanelBtn" class="panel-close-btn" aria-label="Close panel">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="slide-panel-content" id="panelContent">
+        <!-- Panel content will be populated by JavaScript -->
+      </div>
+    </aside>
   </main>
 
   <script src="{{ url_for('static', filename='js/pro.js') }}"></script>

@@ -22,9 +22,9 @@
       <nav class="main-nav" aria-label="Primary navigation">
         <a href="#home" class="active">Home</a>
         <a href="#courses">Courses</a>
-        <a href="#practice">Practice</a>
-        <a href="/about">About</a>
-        <a href="/contact">Contact</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a href="#privacy">Privacy Policy</a>
       </nav>
       <div class="header-actions">
         <button id="loginBtn" class="btn btn-outline">Login</button>
@@ -104,7 +104,7 @@
               <span class="course-tag">Beginner</span>
               <h3>Interactive Python</h3>
               <p>Learn Python through guided projects, quizzes, and real-world examples.</p>
-              <button class="btn btn-primary">Start course</button>
+              <a class="btn btn-primary" href="/python-course">Start course</a>
             </div>
           </article>
 
@@ -114,7 +114,7 @@
               <span class="course-tag">Intermediate</span>
               <h3>Design Fundamentals</h3>
               <p>Build polished visuals and interfaces with modern design principles.</p>
-              <button class="btn btn-primary">Start course</button>
+              <a class="btn btn-primary" href="/design-fundamentals">Start course</a>
             </div>
           </article>
 
@@ -124,8 +124,40 @@
               <span class="course-tag">Advanced</span>
               <h3>Practice Challenges</h3>
               <p>Sharpen your skills with timed tasks, review loops, and hands-on exercises.</p>
-              <button class="btn btn-primary">Start course</button>
+              <a class="btn btn-primary" href="/practice-challenges">Start course</a>
             </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section about-section" id="about">
+      <div class="container">
+        <div class="section-header animate-fade-up">
+          <span class="section-label">About</span>
+          <h2>We build learning experiences that feel modern and motivating.</h2>
+          <p>Proest Learning brings polished UI, strong structure, and interactive practice into one thoughtful education experience.</p>
+        </div>
+        <div class="grid feature-grid">
+          <article class="feature-card animate-slide-up">
+            <div class="feature-icon">🎓</div>
+            <h3>Clear course paths</h3>
+            <p>Every course is built to keep objectives visible and progress easy to follow.</p>
+          </article>
+          <article class="feature-card animate-slide-up delay-1">
+            <div class="feature-icon">🧠</div>
+            <h3>Practice-driven learning</h3>
+            <p>Interactive challenges are woven through lessons to help you retain more.</p>
+          </article>
+          <article class="feature-card animate-slide-up delay-2">
+            <div class="feature-icon">⚙️</div>
+            <h3>Polished experience</h3>
+            <p>A modern interface with responsive layouts, smooth motion, and thoughtful spacing.</p>
+          </article>
+          <article class="feature-card animate-slide-up delay-3">
+            <div class="feature-icon">💬</div>
+            <h3>Support and community</h3>
+            <p>Connect with other learners and get feedback as you progress.</p>
           </article>
         </div>
       </div>
@@ -216,6 +248,82 @@
         </div>
       </div>
     </section>
+
+    <section class="section privacy-section" id="privacy">
+      <div class="container">
+        <div class="section-header animate-fade-up">
+          <span class="section-label">Privacy & Policy</span>
+          <h2>Your privacy and trust matter to us.</h2>
+          <p>Learn how we collect, use, and protect your information on Proest Learning.</p>
+        </div>
+
+        <article class="policy-content glass-card animate-scale-in">
+          <h3>Privacy Policy</h3>
+          
+          <div class="policy-section">
+            <h4>Information We Collect</h4>
+            <p>We collect minimal personal information to provide and improve our learning platform:</p>
+            <ul>
+              <li><strong>Account Information:</strong> Username and password when you create an account</li>
+              <li><strong>Usage Data:</strong> Course progress, quiz scores, and interaction patterns</li>
+              <li><strong>Device Information:</strong> Browser type, operating system, and IP address</li>
+              <li><strong>Analytics:</strong> Page visits, time spent, and features used</li>
+            </ul>
+          </div>
+
+          <div class="policy-section">
+            <h4>How We Use Your Information</h4>
+            <p>Your data helps us:</p>
+            <ul>
+              <li>Personalize your learning experience</li>
+              <li>Track course progress and achievement milestones</li>
+              <li>Improve platform features and course quality</li>
+              <li>Provide technical support and security</li>
+              <li>Send occasional updates about new courses or features</li>
+            </ul>
+          </div>
+
+          <div class="policy-section">
+            <h4>Cookies</h4>
+            <p>We use cookies to enhance your experience:</p>
+            <ul>
+              <li><strong>Essential Cookies:</strong> Necessary for login and session management</li>
+              <li><strong>Analytics Cookies:</strong> Track usage patterns to improve features</li>
+              <li><strong>Preference Cookies:</strong> Remember your settings and choices</li>
+            </ul>
+            <p>You can control cookie settings in your browser preferences.</p>
+          </div>
+
+          <div class="policy-section">
+            <h4>Third-Party Services</h4>
+            <p>We do not sell or share your personal information with third parties for marketing purposes. We may share data only:</p>
+            <ul>
+              <li>With legal authorities when required by law</li>
+              <li>With service providers who assist in platform operations (e.g., hosting, analytics)</li>
+              <li>With your explicit consent for specific purposes</li>
+            </ul>
+          </div>
+
+          <div class="policy-section">
+            <h4>Data Security</h4>
+            <p>We implement industry-standard security measures to protect your information:</p>
+            <ul>
+              <li>Encrypted data transmission (HTTPS)</li>
+              <li>Secure password storage with hashing</li>
+              <li>Regular security audits and updates</li>
+              <li>Limited access to personal data</li>
+            </ul>
+          </div>
+
+          <div class="policy-section">
+            <h4>Contact Information</h4>
+            <p>If you have concerns about your privacy or wish to exercise any of your rights, please reach out to us:</p>
+            <p><strong>Email:</strong> <a href="mailto:privacy@learnhub.example">privacy@learnhub.example</a></p>
+            <p><strong>Support:</strong> <a href="mailto:hello@learnhub.example">hello@learnhub.example</a></p>
+          </div>
+        </article>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer footer-dark">
@@ -223,7 +331,8 @@
       <p>Proest Learning — modern learning for curious minds.</p>
       <div class="footer-links">
         <a href="#contact">Contact</a>
-        <a href="/about">About</a>
+        <a href="#about">About</a>
+        <a href="#privacy">Privacy</a>
         <a href="#terms" id="termsLinkFooter">Terms</a>
       </div>
     </div>

@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Practice Challenges - Proest Learning</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    body {
+      background: url('{{ url_for('static', filename='images/muypro.avif') }}') no-repeat center center fixed;
+      background-size: cover;
+    }
+    /* Make hero section have a subtle blue overlay so image still shows through */
+    .course-hero {
+      background: linear-gradient(135deg, rgba(29,61,139,0.4) 0%, rgba(30,58,138,0.4) 100%) !important;
+    }
+    /* Add slight dark overlay to content sections for readability */
+    .course-content {
+      background: rgba(16, 28, 52, 0.7);
+    }
+    .site-footer {
+      background: rgba(15, 23, 42, 0.9);
+    }
+    /* Ensure lesson cards remain readable */
+    .lesson-card {
+      background: rgba(23, 36, 61, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/">Proest Learning</a>
+      <button id="mobileToggle" class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="main-nav" aria-label="Primary navigation">
+        <a href="/">Home</a>
+        <a href="/#courses">Courses</a>
+        <a href="/#about">About</a>
+        <a href="/#contact">Contact</a>
+        <a href="/privacy">Privacy Policy</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="course-hero" class="course-hero" style="background: linear-gradient(135deg, #1d3d8b 0%, #1e3a8a 100%);">
+      <div class="container course-hero-inner">
+        <div class="course-hero-content animate-fade-up">
+          <span class="course-level">Advanced Level</span>
+          <h1>Practice Challenges</h1>
+          <p>Sharpen your skills with timed coding tasks, logic puzzles, and hands-on exercises. Test your knowledge against real-world scenarios and track your progress with detailed performance metrics.</p>
+          <div class="course-stats">
+            <div class="stat">
+              <strong>50+</strong>
+              <span>Challenges</span>
+            </div>
+            <div class="stat">
+              <strong>60 hrs</strong>
+              <span>Duration</span>
+            </div>
+            <div class="stat">
+              <strong>20</strong>
+              <span>Difficulty Tiers</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section course-content">
+      <div class="container">
+        <div class="course-progress">
+          <div class="progress-label">
+            <span>Course Progress</span>
+            <span class="progress-percent">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div class="lessons-grid">
+          <article class="lesson-card animate-slide-up">
+            <div class="lesson-header">
+              <span class="lesson-number">01</span>
+              <span class="lesson-status">Not Started</span>
+            </div>
+            <h3>String Manipulation Challenges</h3>
+            <p>Master string operations with 8 timed challenges covering reversing, searching, formatting, and advanced text processing.</p>
+            <div class="lesson-meta">
+              <span class="lesson-time">⏱ 45 min</span>
+              <span class="lesson-difficulty">Beginner</span>
+            </div>
+            <a class="btn btn-secondary" href="#course-hero">Start Challenge</a>
+          </article>
+
+          <article class="lesson-card animate-slide-up delay-1">
+            <div class="lesson-header">
+              <span class="lesson-number">02</span>
+              <span class="lesson-status">Not Started</span>
+            </div>
+            <h3>Array & List Algorithms</h3>
+            <p>Work through 10 algorithm challenges including sorting, searching, and optimization problems with increasing complexity.</p>
+            <div class="lesson-meta">
+              <span class="lesson-time">⏱ 60 min</span>
+              <span class="lesson-difficulty">Intermediate</span>
+            </div>
+            <a class="btn btn-secondary" href="#course-hero">Start Challenge</a>
+          </article>
+
+          <article class="lesson-card animate-slide-up delay-2">
+            <div class="lesson-header">
+              <span class="lesson-number">03</span>
+              <span class="lesson-status">Not Started</span>
+            </div>
+            <h3>Logic & Problem Solving</h3>
+            <p>Test your logical thinking with puzzles, riddles, and problem-solving tasks that build critical thinking skills.</p>
+            <div class="lesson-meta">
+              <span class="lesson-time">⏱ 75 min</span>
+              <span class="lesson-difficulty">Intermediate</span>
+            </div>
+            <a class="btn btn-secondary" href="#course-hero">Start Challenge</a>
+          </article>
+
+          <article class="lesson-card animate-slide-up delay-3">
+            <div class="lesson-header">
+              <span class="lesson-number">04</span>
+              <span class="lesson-status">Not Started</span>
+            </div>
+            <h3>Data Structure Design</h3>
+            <p>Build custom data structures and implement efficient solutions using stacks, queues, trees, and graphs.</p>
+            <div class="lesson-meta">
+              <span class="lesson-time">⏱ 90 min</span>
+              <span class="lesson-difficulty">Advanced</span>
+            </div>
+            <a class="btn btn-secondary" href="#course-hero">Start Challenge</a>
+          </article>
+
+          <article class="lesson-card animate-slide-up delay-1">
+            <div class="lesson-header">
+              <span class="lesson-number">05</span>
+              <span class="lesson-status">Not Started</span>
+            </div>
+            <h3>Real-World Application Projects</h3>
+            <p>Tackle capstone projects that simulate real-world scenarios: building a task manager, expense tracker, and data analyzer.</p>
+            <div class="lesson-meta">
+              <span class="lesson-time">⏱ 120 min</span>
+              <span class="lesson-difficulty">Advanced</span>
+            </div>
+            <a class="btn btn-secondary" href="#course-hero">Start Challenge</a>
+          </article>
+
+          <article class="lesson-card animate-slide-up delay-2">
+            <div class="lesson-header">
+              <span class="lesson-number">06</span>
+              <span class="lesson-status">Not Started</span>
+            </div>
+            <h3>Performance Optimization & Best Practices</h3>
+            <p>Learn optimization techniques, code quality standards, and refactoring practices used in professional development.</p>
+            <div class="lesson-meta">
+              <span class="lesson-time">⏱ 80 min</span>
+              <span class="lesson-difficulty">Advanced</span>
+            </div>
+            <a class="btn btn-secondary" href="#course-hero">Start Challenge</a>
+          </article>
+        </div>
+
+        <div class="course-actions">
+          <a href="/#courses" class="btn btn-primary">Back to Courses</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer footer-dark">
+    <div class="container footer-inner">
+      <p>Proest Learning — modern learning for curious minds.</p>
+      <div class="footer-links">
+        <a href="/#contact">Contact</a>
+        <a href="/#about">About</a>
+        <a href="/#privacy">Privacy</a>
+        <a href="/#terms">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

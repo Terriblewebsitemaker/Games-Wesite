@@ -18,6 +18,26 @@ def contact():
     return render_template("contact.html")
 
 
+@app.route("/privacy")
+def privacy():
+    return render_template("privacy.html")
+
+
+@app.route("/python-course")
+def python_course():
+    return render_template("python-course.html")
+
+
+@app.route("/design-fundamentals")
+def design_fundamentals():
+    return render_template("design-fundamentals.html")
+
+
+@app.route("/practice-challenges")
+def practice_challenges():
+    return render_template("practice-challenges.html")
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     error = None
@@ -40,4 +60,4 @@ def pro():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True) 

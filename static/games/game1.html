@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 3em;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            margin-bottom: 20px;
+        }
+        #gameCanvas {
+            border: 3px solid #00fff5;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 255, 245, 0.3);
+            background: #0a0a1a;
+        }
+        .score {
+            font-size: 1.5em;
+            margin-top: 15px;
+            color: #00fff5;
+        }
+        .instructions {
+            margin-top: 10px;
+            color: #888;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎮 Space Dodger</h1>
+    <canvas id="gameCanvas" width="600" height="400"></canvas>
+    <div class="score">Score: <span id="score">0</span></div>
+    <div class="instructions">Use LEFT/RIGHT arrow keys or A/D to move</div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('score');
+
+        // Game state
+        let score = 0;
+        let gameOver = false;
+        let player = { x: canvas.width / 2 - 20, y: canvas.height - 60, width: 40, height: 40, speed: 5 };
+        let obstacles = [];
+        let keys = {};
+        let frameCount = 0;
+
+        // Input handling
+        document.addEventListener('keydown', (e) => { keys[e.key] = true; });
+        document.addEventListener('keyup', (e) => { keys[e.key] = false; });
+
+        // Create obstacle
+        function createObstacle() {
+            obstacles.push({
+                x: Math.random() * (canvas.width - 30),
+                y: -30,
+                width: 30,
+                height: 30,
+                speed: 2 + Math.random() * 3
+            });
+        }
+
+        // Update game
+        function update() {
+            if (gameOver) {
+                if (keys['r'] || keys['R']) {
+                    resetGame();
+                }
+                return;
+            }
+
+            // Move player
+            if ((keys['ArrowLeft'] || keys['a'] || keys['A']) && player.x > 0) {
+                player.x -= player.speed;
+            }
+            if ((keys['ArrowRight'] || keys['d'] || keys['D']) && player.x < canvas.width - player.width) {
+                player.x += player.speed;
+            }
+
+            // Create obstacles
+            frameCount++;
+            if (frameCount % 40 === 0) {
+                createObstacle();
+            }
+
+            // Update obstacles
+            for (let i = obstacles.length - 1; i >= 0; i--) {
+                obstacles[i].y += obstacles[i].speed;
+
+                // Check collision
+                if (
+                    player.x < obstacles[i].x + obstacles[i].width &&
+                    player.x + player.width > obstacles[i].x &&
+                    player.y < obstacles[i].y + obstacles[i].height &&
+                    player.y + player.height > obstacles[i].y
+                ) {
+                    gameOver = true;
+                }
+
+                // Remove off-screen obstacles and increase score
+                if (obstacles[i].y > canvas.height) {
+                    obstacles.splice(i, 1);
+                    score++;
+                    scoreEl.textContent = score;
+                }
+            }
+        }
+
+        // Draw game
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (gameOver) {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#ff4444';
+                ctx.font = '48px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('Game Over!', canvas.width / 2, canvas.height / 2 - 20);
+                ctx.fillStyle = '#00fff5';
+                ctx.font = '24px Arial';
+                ctx.fillText(`Final Score: ${score}`, canvas.width / 2, canvas.height / 2 + 30);
+                ctx.fillText('Press R to restart', canvas.width / 2, canvas.height / 2 + 70);
+                return;
+            }
+
+            // Draw player
+            ctx.fillStyle = '#00fff5';
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#00fff5';
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+            ctx.shadowBlur = 0;
+
+            // Draw obstacles
+            obstacles.forEach(obs => {
+                ctx.fillStyle = '#ff4444';
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#ff4444';
+                ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+                ctx.shadowBlur = 0;
+            });
+        }
+
+        // Game loop
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Reset game
+        function resetGame() {
+            score = 0;
+            gameOver = false;
+            obstacles = [];
+            frameCount = 0;
+            player.x = canvas.width / 2 - 20;
+            scoreEl.textContent = '0';
+        }
+
+        // Start game
+        gameLoop();
+    </script>
+</body>
+</html>
