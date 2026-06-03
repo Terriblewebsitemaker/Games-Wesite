@@ -38,7 +38,7 @@
   const GAME_SLOTS = [
     {
       id: 1,
-      title: 'Tuff Client 1.12.2',
+      title: 'Tuff Client 1.12.2 -_-',
       description: 'Launch Tuff Client 1.12.2 in a dedicated browser tab.',
       icon: '',
       image: 'https://i.postimg.cc/nrMnwBfL/image-2026-06-02-191525587.png',
@@ -50,7 +50,7 @@
     {
       id: 2,
       title: 'PolyTrack',
-      description: '',
+      description: 'PolyTrack game -_-',
       icon: '',
       image: 'https://i.postimg.cc/0j3Kt93W/image-2026-06-02-193916628.png',
       thumbnailLink: '',
@@ -61,7 +61,7 @@
     {
       id: 3,
       title: 'Super Mario 64',
-      description: 'Mario',
+      description: 'Mario game -_-',
       icon: '',
       image: 'https://i.postimg.cc/c4szZ0vS/image-2026-06-02-192850900.png',
       thumbnailLink: '',
@@ -72,7 +72,7 @@
     {
       id: 4,
       title: 'Basketball Legends',
-      description: '',
+      description: 'Basketball game -_-',
       icon: '',
       image: 'https://i.postimg.cc/6Qw2bjjy/image-2026-06-02-194053208.png',
       thumbnailLink: '',
@@ -82,13 +82,13 @@
     },
     {
       id: 5,
-      title: 'Game Slot 5',
-      description: 'Add your game URL in pro.js to configure this slot.',
+      title: 'Soccer Bros',
+      description: 'Soccer game -_-',
       icon: '',
-      image: '',
+      image: 'https://i.postimg.cc/Bn0D9PRr/image-2026-06-03-181814312.png',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: '', // <-- ADD YOUR GAME URL HERE
+      url: 'https://classy-selkie-688a0f.netlify.app/', // <-- ADD YOUR GAME URL HERE
       status: 'available'
     },
     {
@@ -215,7 +215,24 @@
   }
 
   function openGameInNewTab(game) {
-    window.open(game.url, '_blank', 'noopener,noreferrer,fullscreen=yes');
+    const newWin = window.open('about:blank', '_blank');
+    if (!newWin) return;
+
+    newWin.document.write(`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>${game.title}</title>
+    <style>
+      html, body { margin: 0; height: 100%; overflow: hidden; }
+      iframe { border: 0; width: 100%; height: 100vh; }
+    </style>
+  </head>
+  <body>
+    <iframe src="${game.url}" title="${game.title}" allowfullscreen></iframe>
+  </body>
+</html>`);
+    newWin.document.close();
   }
 
   function createGameCard(slot, index) {
