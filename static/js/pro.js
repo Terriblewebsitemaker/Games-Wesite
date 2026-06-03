@@ -955,10 +955,10 @@
       panelOverlay.addEventListener('click', closePanel);
     }
 
-    // Open blank page button
+    // Launch site button
     if (openBlankBtn) {
       openBlankBtn.addEventListener('click', () => {
-        window.open('about:blank', '_blank');
+        window.open(window.location.origin, '_blank');
       });
     }
   }
