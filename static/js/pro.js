@@ -1,14 +1,15 @@
-// pro.js — Game Launcher/Gallery functionality
+// pro.js - Game launcher functionality
 // Handles game selection, viewer management, and access control
 //
 // ========================================
-// HOW TO ADD YOUR GAMES:
+// HOW TO ADD GAMES:
 // 1. Find the GAME_SLOTS array below
-// 2. Replace the empty code: '' with your game's HTML/JS code as a string
-// 3. Optionally customize the title, description, and icon
+// 2. Add the URL/path to your game's HTML file in the url field
+// 3. Customize title and description as needed
 //
 // Example:
-//   code: `<html><body><h1>My Game</h1><canvas id="game"></canvas><script>...<\/script></body></html>`
+//   url: 'static/games/mygame.html'
+//   url: 'https://example.com/game.html'
 // ========================================
 
 (function () {
@@ -18,96 +19,131 @@
   const VALID_CODE = 'ampro';
 
   // ========================================
-  // GAME SLOTS - Add your game code here!
+  // GAME SLOTS - Add your game URLs here!
   // ========================================
-  // Simply replace the empty code: '' with your game's HTML/JS code.
-  // Paste your entire game HTML code as a string (including <html>, <body>, <script> tags).
+  // Simply replace the empty url: '' with the path or URL to your game.
+  // The game should be a complete HTML file.
+  //
+  // This launcher opens the game in a new browser tab for full-screen playback.
   //
   // You can also change:
   //   - title: The name shown on the game card
   //   - description: Short description of your game
   //   - icon: An emoji to represent the game (or leave as 🎮)
+  //   - image: A custom card thumbnail image (optional)
+  //   - thumbnailLink: Optional URL for a separate thumbnail link action
+  //   - thumbnailLabel: Optional label for the thumbnail link action
   // ========================================
 
   const GAME_SLOTS = [
     {
       id: 1,
-      title: 'Game Slot 1',
-      description: 'Add your game code in pro.js to configure this slot.',
-      icon: '🎮',
-      code: '', // <-- PASTE YOUR GAME HTML CODE HERE
+      title: 'Tuff Client 1.12.2',
+      description: 'Launch Tuff Client 1.12.2 in a dedicated browser tab.',
+      icon: '',
+      image: 'https://i.postimg.cc/nrMnwBfL/image-2026-06-02-191525587.png',
+      thumbnailLink: '',
+      thumbnailLabel: '',
+      url: 'https://creative-naiad-08aabd.netlify.app',
       status: 'available'
     },
     {
       id: 2,
-      title: 'Game Slot 2',
-      description: 'Add your game code in pro.js to configure this slot.',
-      icon: '🎮',
-      code: '', // <-- PASTE YOUR GAME HTML CODE HERE
+      title: 'PolyTrack',
+      description: '',
+      icon: '',
+      image: 'https://i.postimg.cc/0j3Kt93W/image-2026-06-02-193916628.png',
+      thumbnailLink: '',
+      thumbnailLabel: '',
+      url: 'https://earnest-dieffenbachia-dae903.netlify.app', // <-- ADD YOUR GAME URL HERE
       status: 'available'
     },
     {
       id: 3,
-      title: 'Game Slot 3',
-      description: 'Add your game code in pro.js to configure this slot.',
-      icon: '🎮',
-      code: '', // <-- PASTE YOUR GAME HTML CODE HERE
+      title: 'Super Mario 64',
+      description: 'Mario',
+      icon: '',
+      image: 'https://i.postimg.cc/c4szZ0vS/image-2026-06-02-192850900.png',
+      thumbnailLink: '',
+      thumbnailLabel: '',
+      url: 'https://thriving-tulumba-940dca.netlify.app',
       status: 'available'
     },
     {
       id: 4,
-      title: 'Game Slot 4',
-      description: 'Add your game code in pro.js to configure this slot.',
-      icon: '🎮',
-      code: '', // <-- PASTE YOUR GAME HTML CODE HERE
+      title: 'Basketball Legends',
+      description: '',
+      icon: '',
+      image: 'https://i.postimg.cc/6Qw2bjjy/image-2026-06-02-194053208.png',
+      thumbnailLink: '',
+      thumbnailLabel: '',
+      url: 'https://jolly-gumdrop-f5aa41.netlify.app',
       status: 'available'
     },
     {
       id: 5,
       title: 'Game Slot 5',
-      description: 'Add your game code in pro.js to configure this slot.',
-      icon: '🎮',
-      code: '', // <-- PASTE YOUR GAME HTML CODE HERE
+      description: 'Add your game URL in pro.js to configure this slot.',
+      icon: '',
+      image: '',
+      thumbnailLink: '',
+      thumbnailLabel: '',
+      url: '', // <-- ADD YOUR GAME URL HERE
       status: 'available'
     },
     {
       id: 6,
       title: 'Game Slot 6',
-      description: 'Add your game code in pro.js to configure this slot.',
-      icon: '🎮',
-      code: '', // <-- PASTE YOUR GAME HTML CODE HERE
+      description: 'Add your game URL in pro.js to configure this slot.',
+      icon: '',
+      image: '',
+      thumbnailLink: '',
+      thumbnailLabel: '',
+      url: '', // <-- ADD YOUR GAME URL HERE
       status: 'available'
     },
     {
       id: 7,
       title: 'Game Slot 7',
-      description: 'Add your game code in pro.js to configure this slot.',
-      icon: '🎮',
-      code: '', // <-- PASTE YOUR GAME HTML CODE HERE
+      description: 'Add your game URL in pro.js to configure this slot.',
+      icon: '',
+      image: '',
+      thumbnailLink: '',
+      thumbnailLabel: '',
+      url: '', // <-- ADD YOUR GAME URL HERE
       status: 'available'
     },
     {
       id: 8,
       title: 'Game Slot 8',
-      description: 'Add your game code in pro.js to configure this slot.',
-      icon: '🎮',
-      code: '', // <-- PASTE YOUR GAME HTML CODE HERE
+      description: 'Add your game URL in pro.js to configure this slot.',
+      icon: '',
+      image: '',
+      thumbnailLink: '',
+      thumbnailLabel: '',
+      url: '', // <-- ADD YOUR GAME URL HERE
       status: 'available'
     },
     {
       id: 9,
       title: 'Game Slot 9',
-      description: 'Add your game code in pro.js to configure this slot.',
-      icon: '🎮',
-      code: '', // <-- PASTE YOUR GAME HTML CODE HERE
+      description: 'Add your game URL in pro.js to configure this slot.',
+      icon: '',
+      image: '',
+      thumbnailLink: '',
+      thumbnailLabel: '',
+      url: '', // <-- ADD YOUR GAME URL HERE
       status: 'available'
     },
     {
       id: 10,
       title: 'Game Slot 10',
-      description: 'Add your game code in pro.js to configure this slot.',
-      icon: '🎮',
-      code: '', // <-- PASTE YOUR GAME HTML CODE HERE
+      description: 'Add your game URL in pro.js to configure this slot.',
+      icon: '',
+      image: '',
+      thumbnailLink: '',
+      thumbnailLabel: '',
+      url: '', // <-- ADD YOUR GAME URL HERE
       status: 'available'
     }
   ];
@@ -124,6 +160,7 @@
   const closeBtn = document.getElementById('closeBtn');
   const closeGameBtn = document.getElementById('closeGameBtn');
   const backToGames = document.getElementById('backToGames');
+  const openBlankBtn = document.getElementById('openBlankBtn');
   const carouselScrollbar = document.querySelector('.carousel-scrollbar-inner');
 
   // Panel Elements
@@ -146,10 +183,10 @@
   // ========================================
 
   function showAccessDenied() {
-    accessDenied.classList.remove('hidden');
-    setTimeout(() => {
-      window.location.replace('/');
-    }, 1400);
+    // Access denied behavior has been disabled.
+    accessDenied.classList.add('hidden');
+    console.warn('Access denied blocked; revealing Pro area instead.');
+    revealPro();
   }
 
   function revealPro() {
@@ -177,6 +214,10 @@
     });
   }
 
+  function openGameInNewTab(game) {
+    window.open(game.url, '_blank', 'noopener,noreferrer,fullscreen=yes');
+  }
+
   function createGameCard(slot, index) {
     const card = document.createElement('article');
     card.className = 'game-card';
@@ -185,15 +226,15 @@
     card.setAttribute('aria-label', `Play ${slot.title}`);
     card.style.animationDelay = `${index * 0.05}s`;
 
-    // Check if game code is configured
-    const isConfigured = slot.code && slot.code.trim() !== '';
+    // Check if game URL is configured
+    const isConfigured = slot.url && slot.url.trim() !== '';
     const statusDotClass = slot.status === 'in-progress' ? 'in-progress' : '';
     const statusText = isConfigured ? (slot.status === 'in-progress' ? 'In Progress' : 'New') : 'Not Configured';
-    const icon = slot.icon || '🎮';
+    const icon = slot.icon || '';
 
     card.innerHTML = `
       <div class="game-card-thumbnail">
-        <span class="game-card-icon">${icon}</span>
+        ${slot.image ? `<img src="${slot.image}" alt="${slot.title} thumbnail">` : `<span class="game-card-icon">${icon}</span>`}
         ${!isConfigured ? '<div class="not-configured-overlay">Coming Soon</div>' : ''}
       </div>
       <div class="game-card-content">
@@ -218,11 +259,11 @@
 
     // Click handler (only if configured)
     if (isConfigured) {
-      card.addEventListener('click', () => loadGame(slot));
+      card.addEventListener('click', () => openGameInNewTab(slot));
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          loadGame(slot);
+          openGameInNewTab(slot);
         }
       });
     } else {
@@ -244,8 +285,8 @@
     // Show loading state
     gameLoading.classList.remove('hidden');
 
-    // Inject game code directly into iframe using srcdoc
-    gameFrame.srcdoc = game.code;
+    // Load game from URL
+    gameFrame.src = game.url;
     gameFrame.title = game.title;
 
     // Show viewer, hide selection
@@ -305,7 +346,7 @@
 
   const PANEL_CONTENT = {
     settings: {
-      title: '⚙️ Settings',
+      title: 'Settings',
       content: `
         <div class="panel-section">
           <h4 class="panel-section-title">Preferences</h4>
@@ -376,43 +417,43 @@
       `
     },
     help: {
-      title: '❓ Help & Support',
+      title: 'Help',
       content: `
         <div class="help-section">
-          <h4>📖 Getting Started</h4>
-          <p>Welcome to the Pro Game Launcher! Click on any game card to start playing. Use the action buttons below for quick access to settings, chat, and more.</p>
+          <h4>Getting Started</h4>
+          <p>Click on any game card to start playing. Use the action buttons below for quick access to settings, chat, and more.</p>
         </div>
         <div class="help-section">
-          <h4>🎮 How to Play</h4>
-          <p>Select a game from the carousel. The game will load in the viewer area below. Press ESC or click "Close Game" to return to the selection.</p>
+          <h4>How to Play</h4>
+          <p>Select a game from the carousel. It will open in a new tab for full-screen play. Return to the launcher tab to choose another game.</p>
         </div>
         <div class="help-section">
-          <h4>⌨️ Keyboard Shortcuts</h4>
-          <p><strong>ESC</strong> - Close current game<br>
-          <strong>← →</strong> - Scroll through games</p>
+          <h4>Keyboard Shortcuts</h4>
+          <p><strong>ESC</strong> - Close the current panel<br>
+          <strong>Left/Right Arrow</strong> - Scroll through games</p>
         </div>
         <div class="help-section">
-          <h4>📧 Contact Support</h4>
+          <h4>Contact Support</h4>
           <p>Need help? Reach out to our support team at <a href="mailto:support@example.com" class="help-link">support@example.com</a></p>
         </div>
       `
     },
     chat: {
-      title: '💬 Community Chat',
+      title: 'Chat',
       content: `
         <div class="chat-messages" id="chatMessages">
           <div class="chat-message">
-            <div class="chat-message-avatar">🤖</div>
+            <div class="chat-message-avatar">S</div>
             <div class="chat-message-content">
               <div class="chat-message-name">System</div>
-              <div class="chat-message-text">Welcome to the community chat! Say hello to other gamers.</div>
+              <div class="chat-message-text">Welcome to the chat.</div>
             </div>
           </div>
           <div class="chat-message">
-            <div class="chat-message-avatar">👾</div>
+            <div class="chat-message-avatar">P</div>
             <div class="chat-message-content">
               <div class="chat-message-name">ProGamer42</div>
-              <div class="chat-message-text">Hey! Just beat the final boss in Cosmic Defender! 🚀</div>
+              <div class="chat-message-text">Just beat the final boss!</div>
             </div>
           </div>
         </div>
@@ -423,91 +464,66 @@
       `
     },
     store: {
-      title: '🛍️ Game Store',
+      title: 'Store',
       content: `
         <div class="store-item">
-          <div class="store-item-icon">🏆</div>
           <div class="store-item-info">
-            <div class="store-item-name">Pro Badge Pack</div>
-            <div class="store-item-desc">5 exclusive badges to showcase your achievements</div>
-            <span class="store-item-price">💎 100</span>
+            <div class="store-item-name">Badge Pack</div>
+            <div class="store-item-desc">5 exclusive badges for your achievements</div>
+            <span class="store-item-price">100 points</span>
           </div>
         </div>
         <div class="store-item">
-          <div class="store-item-icon">🎨</div>
           <div class="store-item-info">
             <div class="store-item-name">Custom Theme</div>
-            <div class="store-item-desc">Unlock custom color themes for your profile</div>
-            <span class="store-item-price">💎 250</span>
+            <div class="store-item-desc">Unlock custom color themes</div>
+            <span class="store-item-price">250 points</span>
           </div>
         </div>
         <div class="store-item">
-          <div class="store-item-icon">⚡</div>
           <div class="store-item-info">
             <div class="store-item-name">XP Booster</div>
-            <div class="store-item-desc">2x experience points for 7 days</div>
-            <span class="store-item-price">💎 500</span>
+            <div class="store-item-desc">2x experience for 7 days</div>
+            <span class="store-item-price">500 points</span>
           </div>
         </div>
         <div class="store-item">
-          <div class="store-item-icon">👑</div>
           <div class="store-item-info">
             <div class="store-item-name">VIP Membership</div>
-            <div class="store-item-desc">Access to exclusive games and early releases</div>
-            <span class="store-item-price">💎 1000</span>
+            <div class="store-item-desc">Access to exclusive games</div>
+            <span class="store-item-price">1000 points</span>
           </div>
         </div>
       `
     },
     community: {
-      title: '🌐 Community',
+      title: 'Community',
       content: `
         <div class="panel-section">
-          <h4 class="panel-section-title">Community Stats</h4>
+          <h4 class="panel-section-title">Stats</h4>
           <div class="community-stat">
-            <div class="community-stat-icon">👥</div>
-            <div class="community-stat-info">
-              <div class="community-stat-value">12,450</div>
-              <div class="community-stat-label">Active Players</div>
-            </div>
+            <div class="community-stat-value">12,450</div>
+            <div class="community-stat-label">Active Players</div>
           </div>
           <div class="community-stat">
-            <div class="community-stat-icon">🎮</div>
-            <div class="community-stat-info">
-              <div class="community-stat-value">89,320</div>
-              <div class="community-stat-label">Games Played Today</div>
-            </div>
+            <div class="community-stat-value">89,320</div>
+            <div class="community-stat-label">Games Played Today</div>
           </div>
           <div class="community-stat">
-            <div class="community-stat-icon">🏆</div>
-            <div class="community-stat-info">
-              <div class="community-stat-value">1,240</div>
-              <div class="community-stat-label">Achievements Unlocked</div>
-            </div>
+            <div class="community-stat-value">1,240</div>
+            <div class="community-stat-label">Achievements Unlocked</div>
           </div>
           <div class="community-stat">
-            <div class="community-stat-icon">📈</div>
-            <div class="community-stat-info">
-              <div class="community-stat-value">Top 1%</div>
-              <div class="community-stat-label">Your Ranking</div>
-            </div>
+            <div class="community-stat-value">Top 1%</div>
+            <div class="community-stat-label">Your Ranking</div>
           </div>
         </div>
         <div class="panel-section">
-          <h4 class="panel-section-title">Connect With Us</h4>
+          <h4 class="panel-section-title">Connect</h4>
           <div class="theme-selector">
-            <a href="#" class="theme-option">
-              <span class="theme-option-icon">💬</span>
-              Discord
-            </a>
-            <a href="#" class="theme-option">
-              <span class="theme-option-icon">🐦</span>
-              Twitter
-            </a>
-            <a href="#" class="theme-option">
-              <span class="theme-option-icon">📺</span>
-              YouTube
-            </a>
+            <a href="#" class="theme-option">Discord</a>
+            <a href="#" class="theme-option">Twitter</a>
+            <a href="#" class="theme-option">YouTube</a>
           </div>
         </div>
       `
@@ -555,12 +571,11 @@
 
   // Generate a random user identity for this session
   function generateUserIdentity() {
-    const usernames = ['PixelNinja', 'CodeMaster', 'GamePro', 'StarPlayer', 'NightOwl', 'TechWizard', 'CyberPunk', 'DataHunter'];
-    const colors = ['🔵', '🔴', '🟢', '🟡', '🟣', '🟠', '🔷', '⚫'];
+    const initials = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'W'];
     return {
       id: 'user_' + Math.random().toString(36).substr(2, 9),
-      name: usernames[Math.floor(Math.random() * usernames.length)] + Math.floor(Math.random() * 100),
-      avatar: colors[Math.floor(Math.random() * colors.length)]
+      name: 'User' + Math.floor(Math.random() * 1000),
+      avatar: initials[Math.floor(Math.random() * initials.length)]
     };
   }
 
@@ -938,6 +953,13 @@
     // Close panel when clicking overlay
     if (panelOverlay) {
       panelOverlay.addEventListener('click', closePanel);
+    }
+
+    // Open blank page button
+    if (openBlankBtn) {
+      openBlankBtn.addEventListener('click', () => {
+        window.open('about:blank', '_blank');
+      });
     }
   }
 

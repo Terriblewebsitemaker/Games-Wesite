@@ -17,18 +17,10 @@
     <div id="proRoot" class="pro-root hidden" aria-hidden="true">
       <header class="pro-header">
         <div class="pro-header-content">
-          <h1>🎮 Pro Game Launcher</h1>
+          <h1>Pro Game Launcher</h1>
           <p class="pro-subtitle">Select a game to play or continue your progress</p>
         </div>
-        <div class="pro-actions">
-          <button id="closeBtn" class="btn btn-outline">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-            Exit Pro Area
-          </button>
-        </div>
+        <div class="pro-actions"></div>
       </header>
 
       <!-- Game Selection Section -->
@@ -57,24 +49,28 @@
         <div class="action-bar">
           <div class="action-buttons">
             <button class="action-btn" data-panel="settings" aria-label="Settings" title="Settings">
-              <span class="action-btn-icon">⚙️</span>
+              <span class="action-btn-icon"><img src="https://i.postimg.cc/43nwy3GX/image-2026-06-02-190407847.png" alt="Settings"></span>
               <span class="action-btn-tooltip">Settings</span>
             </button>
             <button class="action-btn" data-panel="help" aria-label="Help" title="Help">
-              <span class="action-btn-icon">❓</span>
+              <span class="action-btn-icon"><img src="https://i.postimg.cc/0yy0XNbK/image-2026-06-02-190527587.png" alt="Help"></span>
               <span class="action-btn-tooltip">Help</span>
             </button>
             <button class="action-btn" data-panel="chat" aria-label="Chat" title="Chat">
-              <span class="action-btn-icon">💬</span>
+              <span class="action-btn-icon"><img src="https://i.postimg.cc/bvGH8F0D/image-2026-06-02-190558546.png" alt="Chat"></span>
               <span class="action-btn-tooltip">Chat</span>
             </button>
             <button class="action-btn" data-panel="store" aria-label="Store" title="Store">
-              <span class="action-btn-icon">🛍️</span>
+              <span class="action-btn-icon"><img src="https://i.postimg.cc/Cx2kvsyz/image-2026-06-02-190704922.png" alt="Store"></span>
               <span class="action-btn-tooltip">Store</span>
             </button>
             <button class="action-btn" data-panel="community" aria-label="Community" title="Community">
-              <span class="action-btn-icon">🌐</span>
+              <span class="action-btn-icon"><img src="https://i.postimg.cc/PJdwL6D0/image-2026-06-02-190759227.png" alt="Community"></span>
               <span class="action-btn-tooltip">Community</span>
+            </button>
+            <button id="openBlankBtn" class="action-btn" aria-label="Open blank page" title="Open blank page">
+              <span class="action-btn-icon">◻</span>
+              <span class="action-btn-tooltip">Blank</span>
             </button>
           </div>
         </div>
@@ -111,7 +107,7 @@
           </div>
         </div>
         <div class="game-viewer-footer">
-          <span class="game-tip">💡 Tip: Press <kbd>ESC</kbd> to quickly return to game selection</span>
+          <span class="game-tip">Tip: Press <kbd>ESC</kbd> to quickly return to game selection</span>
         </div>
       </section>
     </div>
