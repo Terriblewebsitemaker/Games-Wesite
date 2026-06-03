@@ -955,25 +955,25 @@
       panelOverlay.addEventListener('click', closePanel);
     }
 
-    // Launch site inside an about:blank tab
+    // Open the Pro area inside an about:blank tab
     if (openBlankBtn) {
       openBlankBtn.addEventListener('click', () => {
         const newWin = window.open('about:blank', '_blank');
         if (!newWin) return;
 
-        const siteUrl = window.location.origin;
+        const proUrl = `${window.location.origin}/pro`;
         newWin.document.write(`<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Site in blank page</title>
+    <title>Pro Area</title>
     <style>
       html, body { margin: 0; height: 100%; overflow: hidden; }
       iframe { border: 0; width: 100%; height: 100vh; }
     </style>
   </head>
   <body>
-    <iframe src="${siteUrl}" title="Site in blank page"></iframe>
+    <iframe src="${proUrl}" title="Pro Area"></iframe>
   </body>
 </html>`);
         newWin.document.close();
