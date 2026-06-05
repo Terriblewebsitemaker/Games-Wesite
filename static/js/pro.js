@@ -39,7 +39,7 @@
     {
       id: 1,
       title: 'Tuff Client 1.12.2 -_-',
-      description: 'Launch Tuff Client 1.12.2 in a dedicated browser tab.',
+      description: 'Minecraft -_-',
       icon: '',
       image: 'https://i.postimg.cc/nrMnwBfL/image-2026-06-02-191525587.png',
       thumbnailLink: '',
@@ -93,13 +93,13 @@
     },
     {
       id: 6,
-      title: 'Game Slot 6',
-      description: 'Add your game URL in pro.js to configure this slot.',
+      title: 'Escape Road',
+      description: 'Car game -_-',
       icon: '',
-      image: '',
+      image: 'https://i.postimg.cc/rmJZxLxN/image-2026-06-03-182855533.png',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: '', // <-- ADD YOUR GAME URL HERE
+      url: 'https://effulgent-cucurucho-6a64a1.netlify.app', // <-- ADD YOUR GAME URL HERE
       status: 'available'
     },
     {
@@ -216,9 +216,14 @@
 
   function openGameInNewTab(game) {
     const newWin = window.open('about:blank', '_blank');
-    if (!newWin) return;
+    if (!newWin) {
+      alert('Popup blocked. Please allow popups so games can open in a blank page.');
+      return;
+    }
 
-    newWin.document.write(`<!DOCTYPE html>
+    try {
+      newWin.document.open();
+      newWin.document.write(`<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -232,7 +237,13 @@
     <iframe src="${game.url}" title="${game.title}" allowfullscreen></iframe>
   </body>
 </html>`);
-    newWin.document.close();
+      newWin.document.close();
+      newWin.focus();
+    } catch (error) {
+      newWin.close();
+      console.error('Could not open game in about:blank:', error);
+      window.open(game.url, '_blank', 'noopener,noreferrer');
+    }
   }
 
   function createGameCard(slot, index) {
