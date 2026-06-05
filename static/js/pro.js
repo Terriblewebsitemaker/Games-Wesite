@@ -470,18 +470,9 @@
       title: 'Chat',
       content: `
         <div class="chat-messages" id="chatMessages">
-          <div class="chat-message">
-            <div class="chat-message-avatar">S</div>
-            <div class="chat-message-content">
-              <div class="chat-message-name">System</div>
-              <div class="chat-message-text">Welcome to the chat.</div>
-            </div>
-          </div>
-          <div class="chat-message">
-            <div class="chat-message-avatar">P</div>
-            <div class="chat-message-content">
-              <div class="chat-message-name">ProGamer42</div>
-              <div class="chat-message-text">Just beat the final boss!</div>
+          <div class="chat-message chat-system-message">
+            <div class="chat-message-content chat-system-text">
+              <div class="chat-message-text">Welcome to the global chat! Messages you send here will be visible to all users in real-time.</div>
             </div>
           </div>
         </div>
@@ -591,71 +582,147 @@
   }
 
   // ========================================
-  // Real-time Chat System
+  // Real-time Chat System with Flask-SocketIO
   // ========================================
 
-  const CHAT_STORAGE_KEY = 'proChatMessages';
-  const CHAT_MAX_MESSAGES = 50;
+  let socket = null;
+  let chatConnected = false;
+  let typingTimeout = null;
 
-  // Generate a random user identity for this session
-  function generateUserIdentity() {
+  // Get user identity - use server-provided username or fallback
+  function getCurrentUser() {
+    const serverUsername = window.PRO_USERNAME || null;
+    
+    if (serverUsername) {
+      // Use server-provided username
+      const initials = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'W'];
+      return {
+        id: 'user_' + serverUsername,
+        name: serverUsername,
+        avatar: serverUsername.charAt(0).toUpperCase()
+      };
+    }
+    
+    // Fallback to localStorage-based identity
+    try {
+      const saved = localStorage.getItem('proCurrentUser');
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (e) {
+      // ignore
+    }
+    
+    // Generate random identity
     const initials = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'W'];
-    return {
+    const user = {
       id: 'user_' + Math.random().toString(36).substr(2, 9),
       name: 'User' + Math.floor(Math.random() * 1000),
       avatar: initials[Math.floor(Math.random() * initials.length)]
     };
-  }
-
-  let currentUser = null;
-
-  function getCurrentUser() {
-    if (!currentUser) {
-      try {
-        const saved = localStorage.getItem('proCurrentUser');
-        currentUser = saved ? JSON.parse(saved) : generateUserIdentity();
-        localStorage.setItem('proCurrentUser', JSON.stringify(currentUser));
-      } catch (e) {
-        currentUser = generateUserIdentity();
-      }
-    }
-    return currentUser;
-  }
-
-  // Get chat messages from localStorage
-  function getChatMessages() {
     try {
-      const messages = localStorage.getItem(CHAT_STORAGE_KEY);
-      return messages ? JSON.parse(messages) : [];
+      localStorage.setItem('proCurrentUser', JSON.stringify(user));
     } catch (e) {
-      return [];
+      // ignore
     }
+    return user;
   }
 
-  // Save chat messages to localStorage
-  function saveChatMessage(message) {
-    try {
-      const messages = getChatMessages();
-      messages.push(message);
-      // Keep only last N messages
-      if (messages.length > CHAT_MAX_MESSAGES) {
-        messages.splice(0, messages.length - CHAT_MAX_MESSAGES);
+  // Initialize Socket.IO connection
+  function initSocketIO() {
+    if (socket) return;
+    
+    // Connect to Socket.IO server using long-polling
+    socket = io({
+      transports: ['polling'],
+      reconnection: true,
+      reconnectionDelay: 1000,
+      reconnectionAttempts: 10
+    });
+
+    // Connection established
+    socket.on('connect', function() {
+      console.log('Connected to chat server');
+      chatConnected = true;
+      
+      // Join the chat room and send user info
+      const user = getCurrentUser();
+      socket.emit('join_chat', {
+        username: user.name,
+        avatar: user.avatar
+      });
+      
+      updateChatConnectionStatus(true);
+    });
+
+    // Disconnected
+    socket.on('disconnect', function() {
+      console.log('Disconnected from chat server');
+      chatConnected = false;
+      updateChatConnectionStatus(false);
+    });
+
+    // Connection error
+    socket.on('connect_error', function(error) {
+      console.error('Chat connection error:', error);
+      chatConnected = false;
+      updateChatConnectionStatus(false);
+    });
+
+    // Receive chat history when joining
+    socket.on('chat_history', function(data) {
+      const chatMessages = document.getElementById('chatMessages');
+      if (chatMessages && currentPanel === 'chat') {
+        chatMessages.innerHTML = '';
+        data.messages.forEach(msg => {
+          appendChatMessage({
+            name: msg.username,
+            avatar: msg.avatar,
+            text: msg.message,
+            timestamp: msg.timestamp
+          });
+        });
       }
-      localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messages));
-      return true;
-    } catch (e) {
-      console.error('Failed to save chat message:', e);
-      return false;
-    }
+    });
+
+    // Receive new message
+    socket.on('new_message', function(data) {
+      if (currentPanel === 'chat') {
+        appendChatMessage({
+          name: data.username,
+          avatar: data.avatar,
+          text: data.message,
+          timestamp: data.timestamp
+        });
+      }
+    });
+
+    // User typing indicator
+    socket.on('user_typing', function(data) {
+      // Could show typing indicator here if desired
+    });
   }
 
-  // Broadcast message to all tabs via storage event
-  function broadcastChatMessage(message) {
-    // Save to localStorage (triggers storage event in other tabs)
-    saveChatMessage(message);
-    // Also update current tab's chat if open
-    if (currentPanel === 'chat') {
-      appendChatMessage(message);
+  // Update chat connection status indicator
+  function updateChatConnectionStatus(connected) {
+    const chatInput = document.getElementById('chatInput');
+    const chatSendBtn = document.getElementById('chatSendBtn');
+    const chatMessages = document.getElementById('chatMessages');
+    
+    if (connected) {
+      if (chatInput) chatInput.disabled = false;
+      if (chatSendBtn) chatSendBtn.disabled = false;
+    } else {
+      if (chatInput) chatInput.disabled = true;
+      if (chatSendBtn) chatSendBtn.disabled = true;
+      if (chatMessages) {
+        // Show connection status
+        const statusDiv = document.createElement('div');
+        statusDiv.className = 'chat-status-message';
+        statusDiv.textContent = 'Connecting to chat...';
+        chatMessages.appendChild(statusDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
     }
   }
 
@@ -664,12 +731,31 @@
     const chatMessages = document.getElementById('chatMessages');
     if (!chatMessages) return;
 
+    // Remove connection status if present
+    const statusMsg = chatMessages.querySelector('.chat-status-message');
+    if (statusMsg) statusMsg.remove();
+
     const messageDiv = document.createElement('div');
     messageDiv.className = 'chat-message';
+    
+    // Format timestamp if available
+    let timeDisplay = '';
+    if (message.timestamp) {
+      try {
+        const date = new Date(message.timestamp);
+        timeDisplay = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      } catch (e) {
+        timeDisplay = '';
+      }
+    }
+    
     messageDiv.innerHTML = `
       <div class="chat-message-avatar">${message.avatar}</div>
       <div class="chat-message-content">
-        <div class="chat-message-name">${escapeHtml(message.name)}</div>
+        <div class="chat-message-header">
+          <div class="chat-message-name">${escapeHtml(message.name)}</div>
+          ${timeDisplay ? `<div class="chat-message-time">${timeDisplay}</div>` : ''}
+        </div>
         <div class="chat-message-text">${escapeHtml(message.text)}</div>
       </div>
     `;
@@ -677,34 +763,27 @@
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  // Render all chat messages
-  function renderChatMessages() {
-    const chatMessages = document.getElementById('chatMessages');
-    if (!chatMessages) return;
-
-    const messages = getChatMessages();
-    chatMessages.innerHTML = '';
-    messages.forEach(msg => appendChatMessage(msg));
+  // Send a chat message via Socket.IO
+  function sendChatMessage(text) {
+    if (!socket || !chatConnected) {
+      console.warn('Not connected to chat server');
+      return;
+    }
+    
+    const user = getCurrentUser();
+    socket.emit('send_message', {
+      username: user.name,
+      avatar: user.avatar,
+      message: text
+    });
   }
 
-  // Listen for chat updates from other tabs
-  function setupChatStorageListener() {
-    window.addEventListener('storage', (e) => {
-      if (e.key === CHAT_STORAGE_KEY && currentPanel === 'chat') {
-        // Messages changed in another tab, refresh
-        const chatMessages = document.getElementById('chatMessages');
-        if (chatMessages) {
-          // Get new messages and display only new ones
-          const newMessages = e.newValue ? JSON.parse(e.newValue) : [];
-          const currentCount = chatMessages.querySelectorAll('.chat-message').length;
-          if (newMessages.length > currentCount) {
-            // Clear and re-render (simpler approach)
-            chatMessages.innerHTML = '';
-            newMessages.forEach(msg => appendChatMessage(msg));
-          }
-        }
-      }
-    });
+  // Send typing indicator
+  function sendTypingIndicator() {
+    if (!socket || !chatConnected) return;
+    
+    const user = getCurrentUser();
+    socket.emit('typing', { username: user.name });
   }
 
   // ========================================
@@ -791,8 +870,27 @@
   let currentSettings = loadSettings();
   applySettings(currentSettings);
 
-  // Setup chat listener early
-  setupChatStorageListener();
+  // Initialize Socket.IO when the page loads
+  // This ensures the chat connection is ready when the user opens the chat panel
+  document.addEventListener('DOMContentLoaded', function() {
+    initSocketIO();
+  });
+
+  // Legacy function for backwards compatibility (now a no-op)
+  function setupChatStorageListener() {
+    // Socket.IO handles real-time updates now
+  }
+
+  // Legacy function for backwards compatibility
+  function renderChatMessages() {
+    // Chat messages are now loaded via Socket.IO chat_history event
+  }
+
+  // Legacy function for backwards compatibility
+  function broadcastChatMessage(message) {
+    // Use Socket.IO instead
+    sendChatMessage(message.text);
+  }
 
   function setupPanelListeners(panelType) {
     // Settings panel
