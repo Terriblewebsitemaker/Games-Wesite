@@ -44,7 +44,7 @@
       image: 'https://i.postimg.cc/nrMnwBfL/image-2026-06-02-191525587.png',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: 'https://creative-naiad-08aabd.netlify.app',
+      url: '',
       status: 'available'
     },
     {
@@ -55,7 +55,7 @@
       image: 'https://i.postimg.cc/0j3Kt93W/image-2026-06-02-193916628.png',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: 'https://earnest-dieffenbachia-dae903.netlify.app', // <-- ADD YOUR GAME URL HERE
+      url: '', // <-- ADD YOUR GAME URL HERE
       status: 'available'
     },
     {
@@ -66,7 +66,7 @@
       image: 'https://i.postimg.cc/c4szZ0vS/image-2026-06-02-192850900.png',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: 'https://thriving-tulumba-940dca.netlify.app',
+      url: '',
       status: 'available'
     },
     {
@@ -77,7 +77,7 @@
       image: 'https://i.postimg.cc/6Qw2bjjy/image-2026-06-02-194053208.png',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: 'https://jolly-gumdrop-f5aa41.netlify.app',
+      url: '',
       status: 'available'
     },
     {
@@ -88,7 +88,7 @@
       image: 'https://i.postimg.cc/Bn0D9PRr/image-2026-06-03-181814312.png',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: 'https://classy-selkie-688a0f.netlify.app/', // <-- ADD YOUR GAME URL HERE
+      url: '', // <-- ADD YOUR GAME URL HERE
       status: 'available'
     },
     {
@@ -99,7 +99,7 @@
       image: 'https://i.postimg.cc/rmJZxLxN/image-2026-06-03-182855533.png',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: 'https://effulgent-cucurucho-6a64a1.netlify.app', // <-- ADD YOUR GAME URL HERE
+      url: '', // <-- ADD YOUR GAME URL HERE
       status: 'available'
     },
     {
@@ -110,7 +110,7 @@
       image: 'https://i.postimg.cc/fLxGRQ34/image-2026-06-06-144457719.png',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: 'fantastic-florentine-823385.netlify.app', // <-- ADD YOUR GAME URL HERE
+      url: '', // <-- ADD YOUR GAME URL HERE
       status: 'available'
     },
     {
