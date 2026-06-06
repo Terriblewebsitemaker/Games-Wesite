@@ -4,11 +4,13 @@ from flask_socketio import SocketIO, emit, join_room, leave_room
 from socketio import WSGIApp
 import sqlite3
 import os
+import gzip
 from datetime import datetime
 from functools import wraps
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-here-change-in-production'
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 31536000  # Cache static assets for one year
 
 # Initialize SocketIO with long-polling only (for PythonAnywhere free tier)
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading', transports=['polling'])
@@ -209,6 +211,33 @@ def handle_typing(data):
     """Handle typing indicator"""
     username = data.get('username', 'Anonymous')
     emit('user_typing', {'username': username}, broadcast=True, room='global_chat')
+
+
+@app.after_request
+def apply_response_optimizations(response):
+    """Apply compression and caching headers for faster page loads."""
+    path = request.path
+    accept_encoding = request.headers.get('Accept-Encoding', '')
+
+    if path.startswith('/static/'):
+        response.cache_control.public = True
+        response.cache_control.max_age = 31536000
+        response.cache_control.immutable = True
+    elif response.content_type and response.content_type.startswith('text/html'):
+        response.cache_control.public = True
+        response.cache_control.max_age = 600
+
+    if 'gzip' in accept_encoding.lower() and response.status_code == 200:
+        content_type = response.headers.get('Content-Type', '')
+        if response.headers.get('Content-Encoding', '') == 'gzip':
+            return response
+        if any(mime in content_type for mime in ('text/', 'application/javascript', 'application/json', 'image/svg+xml')):
+            compressed = gzip.compress(response.get_data(), compresslevel=6)
+            response.set_data(compressed)
+            response.headers['Content-Encoding'] = 'gzip'
+            response.headers['Vary'] = 'Accept-Encoding'
+            response.headers['Content-Length'] = len(compressed)
+    return response
 
 
 if __name__ == "__main__":

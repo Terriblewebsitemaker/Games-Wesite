@@ -104,13 +104,13 @@
     },
     {
       id: 7,
-      title: 'Game Slot 7',
+      title: 'FIre Girl ',
       description: 'Add your game URL in pro.js to configure this slot.',
       icon: '',
       image: '',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: '', // <-- ADD YOUR GAME URL HERE
+      url: 'fantastic-florentine-823385.netlify.app', // <-- ADD YOUR GAME URL HERE
       status: 'available'
     },
     {
