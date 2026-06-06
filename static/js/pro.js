@@ -669,10 +669,12 @@
       updateChatConnectionStatus(false);
     });
 
-    // Receive chat history when joining
+    // Receive chat history when joining.
+    // Note: the chat panel now loads history via REST when opened to avoid race conditions.
     socket.on('chat_history', function(data) {
       const chatMessages = document.getElementById('chatMessages');
       if (chatMessages && currentPanel === 'chat') {
+        // Only render if UI already exists; otherwise it will be loaded when the panel opens.
         chatMessages.innerHTML = '';
         data.messages.forEach(msg => {
           appendChatMessage({
@@ -881,9 +883,48 @@
     // Socket.IO handles real-time updates now
   }
 
+  async function loadChatHistoryIntoUI(limit = 20) {
+    const chatMessages = document.getElementById('chatMessages');
+    if (!chatMessages) return;
+
+    // Optional: show loading state
+    const existingStatus = chatMessages.querySelector('.chat-status-message');
+    if (existingStatus) existingStatus.remove();
+
+    const statusDiv = document.createElement('div');
+    statusDiv.className = 'chat-status-message';
+    statusDiv.textContent = 'Loading chat...';
+    chatMessages.appendChild(statusDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    try {
+      const res = await fetch(`/api/chat/messages?limit=${encodeURIComponent(limit)}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const messages = await res.json();
+
+      chatMessages.innerHTML = '';
+      messages.forEach(msg => {
+        appendChatMessage({
+          name: msg.username,
+          avatar: msg.avatar,
+          text: msg.message,
+          timestamp: msg.timestamp
+        });
+      });
+    } catch (e) {
+      console.error('Failed to load chat history:', e);
+      chatMessages.innerHTML = '';
+
+      const errDiv = document.createElement('div');
+      errDiv.className = 'chat-status-message';
+      errDiv.textContent = 'Failed to load messages. Retrying soon...';
+      chatMessages.appendChild(errDiv);
+    }
+  }
+
   // Legacy function for backwards compatibility
   function renderChatMessages() {
-    // Chat messages are now loaded via Socket.IO chat_history event
+    // Chat messages are now loaded via REST when the chat panel opens.
   }
 
   // Legacy function for backwards compatibility
@@ -981,8 +1022,9 @@
       const chatInput = document.getElementById('chatInput');
       const chatSendBtn = document.getElementById('chatSendBtn');
 
-      // Render existing messages
-      renderChatMessages();
+      // Always load last 20 messages when the panel opens.
+      // This avoids race conditions where socket 'chat_history' arrives before the UI exists.
+      loadChatHistoryIntoUI(20);
 
       function sendMessage() {
         const message = chatInput.value.trim();

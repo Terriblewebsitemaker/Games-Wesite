@@ -1,6 +1,7 @@
 import flask
 from flask import Flask, render_template, request, session, jsonify
 from flask_socketio import SocketIO, emit, join_room, leave_room
+import socketio as socketio_module
 import sqlite3
 import os
 from datetime import datetime
@@ -10,8 +11,11 @@ app = Flask(__name__)
 app.secret_key = 'your-secret-key-here-change-in-production'
 
 # Initialize SocketIO with long-polling only (for PythonAnywhere free tier)
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading', 
-                    transports=['polling'])
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading', transports=['polling'])
+
+# Expose a WSGI application object for PythonAnywhere deployment.
+# PythonAnywhere web apps typically use the `application` variable in the WSGI file.
+application = socketio_module.WSGIApp(socketio.server, app)
 
 # Database configuration
 DB_PATH = 'chat.db'
