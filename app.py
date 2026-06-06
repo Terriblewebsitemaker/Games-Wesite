@@ -227,12 +227,18 @@ def apply_response_optimizations(response):
         response.cache_control.public = True
         response.cache_control.max_age = 600
 
+    if response.direct_passthrough or response.is_streamed:
+        return response
+
     if 'gzip' in accept_encoding.lower() and response.status_code == 200:
         content_type = response.headers.get('Content-Type', '')
         if response.headers.get('Content-Encoding', '') == 'gzip':
             return response
         if any(mime in content_type for mime in ('text/', 'application/javascript', 'application/json', 'image/svg+xml')):
-            compressed = gzip.compress(response.get_data(), compresslevel=6)
+            try:
+                compressed = gzip.compress(response.get_data(), compresslevel=6)
+            except RuntimeError:
+                return response
             response.set_data(compressed)
             response.headers['Content-Encoding'] = 'gzip'
             response.headers['Vary'] = 'Accept-Encoding'

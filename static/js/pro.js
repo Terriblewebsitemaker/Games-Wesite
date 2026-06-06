@@ -104,10 +104,10 @@
     },
     {
       id: 7,
-      title: 'FIre Girl ',
+      title: 'Fire Boy and Water Girl',
       description: 'Add your game URL in pro.js to configure this slot.',
       icon: '',
-      image: '',
+      image: 'https://i.postimg.cc/fLxGRQ34/image-2026-06-06-144457719.png',
       thumbnailLink: '',
       thumbnailLabel: '',
       url: 'fantastic-florentine-823385.netlify.app', // <-- ADD YOUR GAME URL HERE
