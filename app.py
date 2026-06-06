@@ -1,7 +1,7 @@
 import flask
 from flask import Flask, render_template, request, session, jsonify
 from flask_socketio import SocketIO, emit, join_room, leave_room
-import socketio as socketio_module
+from socketio import WSGIApp
 import sqlite3
 import os
 from datetime import datetime
@@ -15,10 +15,11 @@ socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading', trans
 
 # Expose a WSGI application object for PythonAnywhere deployment.
 # PythonAnywhere web apps typically use the `application` variable in the WSGI file.
-application = socketio_module.WSGIApp(socketio.server, app)
+application = WSGIApp(socketio.server, app)
 
-# Database configuration
-DB_PATH = 'chat.db'
+# Database configuration: use absolute path to avoid current-directory issues on PythonAnywhere.
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, 'chat.db')
 
 def get_db():
     """Get database connection"""

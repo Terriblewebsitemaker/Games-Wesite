@@ -73,55 +73,6 @@ body.python-bg .course-hero-content h1 {
   font-weight: 800;
 }
 
-body.design-bg .course-hero-content {
-  max-width: 640px;
-}
-
-body.design-bg .course-hero-content p {
-  color: #ffffff;
-  font-size: 1.15rem;
-  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.7), 0 1px 4px rgba(0, 0, 0, 0.5);
-  font-weight: 500;
-  line-height: 1.8;
-}
-
-body.design-bg .course-level {
-  color: #a5f3fc;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-  font-weight: 700;
-}
-
-body.design-bg .course-hero-content h1 {
-  color: #ffffff;
-  text-shadow: 0 3px 14px rgba(0, 0, 0, 0.7), 0 1px 6px rgba(0, 0, 0, 0.5);
-  font-weight: 800;
-}
-
-body.design-bg .lesson-card {
-  background: rgba(23, 42, 69, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-body.design-bg .lesson-card h3 {
-  color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-body.design-bg .lesson-card p {
-  color: #e2e8f0;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-}
-
-body.design-bg .lesson-meta {
-  color: #cbd5e1;
-}
-
-body.design-bg .lesson-time,
-body.design-bg .lesson-difficulty {
-  color: #cbd5e1;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-}
-
 a {
   color: inherit;
   text-decoration: none;
