@@ -1,16 +1,20 @@
 import flask
-from flask import Flask, render_template, request, session, jsonify
+from flask import Flask, render_template, request, session, jsonify, send_from_directory
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from socketio import WSGIApp
 import sqlite3
 import os
+import json
 import gzip
+import importlib.util
 from datetime import datetime
 from functools import wraps
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-here-change-in-production'
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 31536000  # Cache static assets for one year
+app.config['JSON_SORT_KEYS'] = False
 
 # Initialize SocketIO with long-polling only (for PythonAnywhere free tier)
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading', transports=['polling'])
@@ -70,6 +74,99 @@ def save_message(username, avatar, message):
 
 # Initialize database on startup
 init_db()
+
+# Game storage helpers
+
+def get_game_storage_dir():
+    return os.path.join(BASE_DIR, 'game_storage')
+
+
+def get_game_config_path():
+    return os.path.join(get_game_storage_dir(), 'game_config.json')
+
+
+def load_game_config():
+    config_path = get_game_config_path()
+    if not os.path.exists(config_path):
+        return []
+    with open(config_path, 'r', encoding='utf-8') as f:
+        try:
+            return json.load(f)
+        except json.JSONDecodeError:
+            return []
+
+
+def save_game_config(config):
+    config_path = get_game_config_path()
+    with open(config_path, 'w', encoding='utf-8') as f:
+        json.dump(config, f, indent=2)
+
+
+@app.route('/game_storage/<path:filename>')
+def serve_game_storage(filename):
+    return send_from_directory(get_game_storage_dir(), filename)
+
+
+@app.route('/api/game-files', methods=['GET'])
+def api_game_files():
+    directory = get_game_storage_dir()
+    try:
+        files = [name for name in os.listdir(directory) if name.lower().endswith('.html')]
+        files.sort()
+        return jsonify(files)
+    except OSError:
+        return jsonify([])
+
+
+@app.route('/api/game-config', methods=['GET', 'POST'])
+def api_game_config():
+    if request.method == 'GET':
+        return jsonify(load_game_config())
+
+    data = request.get_json(silent=True)
+    if not isinstance(data, list):
+        return jsonify({'error': 'Invalid game configuration format'}), 400
+
+    save_game_config(data)
+    return jsonify({'success': True, 'data': data})
+
+
+def load_ai_chatbot_module():
+    ai_chatbot_path = os.path.join(BASE_DIR, 'Ai.chatbot', 'chatbot.py')
+    if not os.path.exists(ai_chatbot_path):
+        raise FileNotFoundError(f"AI chatbot module not found at {ai_chatbot_path}")
+
+    spec = importlib.util.spec_from_file_location("ai_chatbot", ai_chatbot_path)
+    ai_chatbot = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ai_chatbot)
+    return ai_chatbot
+
+
+@app.route('/ai-chat', methods=['GET', 'POST'])
+def ai_chat():
+    load_dotenv(os.path.join(BASE_DIR, 'Ai.chatbot', '.env'))
+
+    message = ''
+    ai_response = None
+    error = None
+
+    if request.method == 'POST':
+        message = request.form.get('message', '').strip()
+        if not message:
+            error = 'Please enter a message to send to the AI chatbot.'
+        else:
+            api_key = os.getenv('API_KEY')
+            if not api_key:
+                error = 'API_KEY not found. Please set it in Ai.chatbot/.env or as an environment variable.'
+            else:
+                try:
+                    ai_chatbot = load_ai_chatbot_module()
+                    ai_response = ai_chatbot.chat_bot_with_gemini_api(message, api_key)
+                except Exception as exc:
+                    error = str(exc)
+
+    return render_template('ai_chat.html', message=message, ai_response=ai_response, error=error)
+
 
 @app.route("/")
 def home():

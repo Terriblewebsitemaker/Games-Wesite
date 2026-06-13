@@ -3,13 +3,12 @@
 //
 // ========================================
 // HOW TO ADD GAMES:
-// 1. Find the GAME_SLOTS array below
-// 2. Add the URL/path to your game's HTML file in the url field
-// 3. Customize title and description as needed
+// 1. Use the Manage Games button in the Pro Area.
+// 2. Choose a file from the game_storage folder.
+// 3. Customize title, description, icon, image, status, and thumbnails.
 //
-// Example:
-//   url: 'static/games/mygame.html'
-//   url: 'https://example.com/game.html'
+// Each game slot now stores a file name in the `file` field instead of a full URL.
+// The selected HTML file is served from the `game_storage` folder.
 // ========================================
 
 (function () {
@@ -17,25 +16,7 @@
 
   // Configuration
   const VALID_CODE = 'ampro';
-
-  // ========================================
-  // GAME SLOTS - Add your game URLs here!
-  // ========================================
-  // Simply replace the empty url: '' with the path or URL to your game.
-  // The game should be a complete HTML file.
-  //
-  // This launcher opens the game in a new browser tab for full-screen playback.
-  //
-  // You can also change:
-  //   - title: The name shown on the game card
-  //   - description: Short description of your game
-  //   - icon: An emoji to represent the game (or leave as 🎮)
-  //   - image: A custom card thumbnail image (optional)
-  //   - thumbnailLink: Optional URL for a separate thumbnail link action
-  //   - thumbnailLabel: Optional label for the thumbnail link action
-  // ========================================
-
-  const GAME_SLOTS = [
+  let GAME_SLOTS = [
     {
       id: 1,
       title: 'Tuff Client 1.12.2 -_-',
@@ -44,7 +25,7 @@
       image: 'https://i.postimg.cc/nrMnwBfL/image-2026-06-02-191525587.png',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: '',
+      file: 'Tuff_client.html',
       status: 'available'
     },
     {
@@ -55,7 +36,7 @@
       image: 'https://i.postimg.cc/0j3Kt93W/image-2026-06-02-193916628.png',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: '', // <-- ADD YOUR GAME URL HERE
+      file: 'Poly_Track.html',
       status: 'available'
     },
     {
@@ -66,7 +47,7 @@
       image: 'https://i.postimg.cc/c4szZ0vS/image-2026-06-02-192850900.png',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: '',
+      file: '',
       status: 'available'
     },
     {
@@ -77,7 +58,7 @@
       image: 'https://i.postimg.cc/6Qw2bjjy/image-2026-06-02-194053208.png',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: '',
+      file: '',
       status: 'available'
     },
     {
@@ -88,7 +69,7 @@
       image: 'https://i.postimg.cc/Bn0D9PRr/image-2026-06-03-181814312.png',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: '', // <-- ADD YOUR GAME URL HERE
+      file: '',
       status: 'available'
     },
     {
@@ -99,51 +80,51 @@
       image: 'https://i.postimg.cc/rmJZxLxN/image-2026-06-03-182855533.png',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: '', // <-- ADD YOUR GAME URL HERE
+      file: '',
       status: 'available'
     },
     {
       id: 7,
-      title: 'Fire Boy and Water Girl',
-      description: 'Add your game URL in pro.js to configure this slot.',
+      title: 'Game Slot 7',
+      description: 'Choose a game file from game_storage to configure this slot.',
       icon: '',
-      image: 'https://i.postimg.cc/fLxGRQ34/image-2026-06-06-144457719.png',
+      image: '',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: '', // <-- ADD YOUR GAME URL HERE
+      file: '',
       status: 'available'
     },
     {
       id: 8,
       title: 'Game Slot 8',
-      description: 'Add your game URL in pro.js to configure this slot.',
+      description: 'Choose a game file from game_storage to configure this slot.',
       icon: '',
       image: '',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: '', // <-- ADD YOUR GAME URL HERE
+      file: '',
       status: 'available'
     },
     {
       id: 9,
       title: 'Game Slot 9',
-      description: 'Add your game URL in pro.js to configure this slot.',
+      description: 'Choose a game file from game_storage to configure this slot.',
       icon: '',
       image: '',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: '', // <-- ADD YOUR GAME URL HERE
+      file: '',
       status: 'available'
     },
     {
       id: 10,
       title: 'Game Slot 10',
-      description: 'Add your game URL in pro.js to configure this slot.',
+      description: 'Choose a game file from game_storage to configure this slot.',
       icon: '',
       image: '',
       thumbnailLink: '',
       thumbnailLabel: '',
-      url: '', // <-- ADD YOUR GAME URL HERE
+      file: '',
       status: 'available'
     }
   ];
@@ -161,6 +142,7 @@
   const closeGameBtn = document.getElementById('closeGameBtn');
   const backToGames = document.getElementById('backToGames');
   const openBlankBtn = document.getElementById('openBlankBtn');
+  const manageGamesBtn = document.getElementById('manageGamesBtn');
   const carouselScrollbar = document.querySelector('.carousel-scrollbar-inner');
 
   // Panel Elements
@@ -177,6 +159,60 @@
   // State
   let unlocked = false;
   let currentGame = null;
+  let availableGameFiles = [];
+
+  function getGameUrl(slot) {
+    if (!slot || !slot.file) return '';
+    return `${window.location.origin}/game_storage/${encodeURIComponent(slot.file)}`;
+  }
+
+  async function fetchGameFiles() {
+    try {
+      const response = await fetch('/api/game-files');
+      if (!response.ok) throw new Error('Could not load game files');
+      availableGameFiles = await response.json();
+    } catch (error) {
+      console.warn('Could not load available game files:', error);
+      availableGameFiles = [];
+    }
+  }
+
+  async function fetchGameConfig() {
+    try {
+      const response = await fetch('/api/game-config');
+      if (!response.ok) throw new Error('Could not load game config');
+      const config = await response.json();
+      if (Array.isArray(config) && config.length) {
+        GAME_SLOTS = config;
+      }
+    } catch (error) {
+      console.warn('Could not load game configuration, using defaults:', error);
+    }
+  }
+
+  async function saveGameConfig(config) {
+    try {
+      const response = await fetch('/api/game-config', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(config)
+      });
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Could not save game configuration');
+      }
+      const result = await response.json();
+      if (result.success) {
+        GAME_SLOTS = result.data;
+      }
+      return result;
+    } catch (error) {
+      console.error('Could not save game configuration:', error);
+      throw error;
+    }
+  }
 
   // ========================================
   // Access Control
@@ -189,12 +225,14 @@
     revealPro();
   }
 
-  function revealPro() {
+  async function revealPro() {
     unlocked = true;
     accessDenied.classList.add('hidden');
     proRoot.classList.remove('hidden');
     proRoot.classList.add('fade-in');
     proRoot.setAttribute('aria-hidden', 'false');
+
+    await Promise.all([fetchGameFiles(), fetchGameConfig()]);
     populateGames();
     setupEventListeners();
     updateScrollbarPosition();
@@ -215,6 +253,12 @@
   }
 
   function openGameInNewTab(game) {
+    const gameUrl = getGameUrl(game);
+    if (!gameUrl) {
+      alert('No game file is configured for this slot. Please manage the slot and choose a file from game_storage.');
+      return;
+    }
+
     const newWin = window.open('about:blank', '_blank');
     if (!newWin) {
       alert('Popup blocked. Please allow popups so games can open in a blank page.');
@@ -234,7 +278,7 @@
     </style>
   </head>
   <body>
-    <iframe src="${game.url}" title="${game.title}" allowfullscreen></iframe>
+    <iframe src="${gameUrl}" title="${game.title}" allowfullscreen></iframe>
   </body>
 </html>`);
       newWin.document.close();
@@ -242,7 +286,7 @@
     } catch (error) {
       newWin.close();
       console.error('Could not open game in about:blank:', error);
-      window.open(game.url, '_blank', 'noopener,noreferrer');
+      window.open(gameUrl, '_blank', 'noopener,noreferrer');
     }
   }
 
@@ -254,15 +298,14 @@
     card.setAttribute('aria-label', `Play ${slot.title}`);
     card.style.animationDelay = `${index * 0.05}s`;
 
-    // Check if game URL is configured
-    const isConfigured = slot.url && slot.url.trim() !== '';
+    const isConfigured = slot.file && slot.file.trim() !== '';
     const statusDotClass = slot.status === 'in-progress' ? 'in-progress' : '';
     const statusText = isConfigured ? (slot.status === 'in-progress' ? 'In Progress' : 'New') : 'Not Configured';
     const icon = slot.icon || '';
 
     card.innerHTML = `
       <div class="game-card-thumbnail">
-        ${slot.image ? `<img src="${slot.image}" alt="${slot.title} thumbnail">` : `<span class="game-card-icon">${icon}</span>`}
+        ${slot.image ? `<img src="${slot.image}" alt="${slot.title} thumbnail">` : `<span class="game-card-icon">${icon || '🎮'}</span>`}
         ${!isConfigured ? '<div class="not-configured-overlay">Coming Soon</div>' : ''}
       </div>
       <div class="game-card-content">
@@ -283,9 +326,17 @@
           ` : ''}
         </div>
       </div>
+      <button class="game-card-edit-btn" type="button" aria-label="Edit ${slot.title} slot">Edit</button>
     `;
 
-    // Click handler (only if configured)
+    const editButton = card.querySelector('.game-card-edit-btn');
+    if (editButton) {
+      editButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        openGameSlotEditor(slot, index);
+      });
+    }
+
     if (isConfigured) {
       card.addEventListener('click', () => openGameInNewTab(slot));
       card.addEventListener('keydown', (e) => {
@@ -313,8 +364,8 @@
     // Show loading state
     gameLoading.classList.remove('hidden');
 
-    // Load game from URL
-    gameFrame.src = game.url;
+    // Load game from selected game file
+    gameFrame.src = getGameUrl(game);
     gameFrame.title = game.title;
 
     // Show viewer, hide selection
@@ -546,6 +597,20 @@
           </div>
         </div>
       `
+    },
+    manage: {
+      title: 'Manage Games',
+      content: `
+        <div class="panel-section">
+          <h4 class="panel-section-title">Manage Your Slots</h4>
+          <p>Select a slot to choose a game file from the game_storage folder and edit metadata for the Pro area.</p>
+          <div class="panel-field">
+            <label for="manageSlotSelect">Choose slot</label>
+            <select id="manageSlotSelect" class="panel-input"></select>
+          </div>
+        </div>
+        <div id="manageSlotEditor"></div>
+      `
     }
   };
 
@@ -568,6 +633,145 @@
 
     // Setup panel-specific event listeners
     setupPanelListeners(panelType);
+  }
+
+  function openGameSlotEditor(slot, index) {
+    openPanel('manage');
+    const slotSelect = document.getElementById('manageSlotSelect');
+    if (slotSelect) {
+      slotSelect.value = index;
+      slotSelect.dispatchEvent(new Event('change'));
+    }
+  }
+
+  function renderGameSlotEditor(index) {
+    const editor = document.getElementById('manageSlotEditor');
+    const slot = GAME_SLOTS[index];
+    if (!editor || !slot) return;
+
+    const fileOptions = ['<option value="">Choose a game file...</option>']
+      .concat(availableGameFiles.map(file => {
+        const selected = file === slot.file ? ' selected' : '';
+        return `<option value="${escapeHtml(file)}"${selected}>${escapeHtml(file)}</option>`;
+      }))
+      .join('');
+
+    editor.innerHTML = `
+      <div class="panel-section">
+        <div class="panel-field">
+          <label for="gameFileSelect">Game file</label>
+          <select id="gameFileSelect" class="panel-input">${fileOptions}</select>
+        </div>
+        <div class="panel-field">
+          <label for="gameTitleInput">Title</label>
+          <input id="gameTitleInput" class="panel-input" type="text" value="${escapeHtml(slot.title || '')}" />
+        </div>
+        <div class="panel-field">
+          <label for="gameDescriptionInput">Description</label>
+          <textarea id="gameDescriptionInput" class="panel-input">${escapeHtml(slot.description || '')}</textarea>
+        </div>
+        <div class="panel-field">
+          <label for="gameIconInput">Icon</label>
+          <input id="gameIconInput" class="panel-input" type="text" value="${escapeHtml(slot.icon || '')}" placeholder="Emoji or short icon text" />
+        </div>
+        <div class="panel-field">
+          <label for="gameImageInput">Thumbnail image URL</label>
+          <input id="gameImageInput" class="panel-input" type="text" value="${escapeHtml(slot.image || '')}" placeholder="Optional image URL" />
+        </div>
+        <div class="panel-field">
+          <label for="gameThumbnailLinkInput">Thumbnail link</label>
+          <input id="gameThumbnailLinkInput" class="panel-input" type="text" value="${escapeHtml(slot.thumbnailLink || '')}" placeholder="Optional link" />
+        </div>
+        <div class="panel-field">
+          <label for="gameThumbnailLabelInput">Thumbnail label</label>
+          <input id="gameThumbnailLabelInput" class="panel-input" type="text" value="${escapeHtml(slot.thumbnailLabel || '')}" placeholder="Optional label" />
+        </div>
+        <div class="panel-field">
+          <label for="gameStatusSelect">Status</label>
+          <select id="gameStatusSelect" class="panel-input">
+            <option value="available"${slot.status === 'available' ? ' selected' : ''}>Available</option>
+            <option value="in-progress"${slot.status === 'in-progress' ? ' selected' : ''}>In Progress</option>
+            <option value="coming-soon"${slot.status === 'coming-soon' ? ' selected' : ''}>Coming Soon</option>
+            <option value="unavailable"${slot.status === 'unavailable' ? ' selected' : ''}>Unavailable</option>
+          </select>
+        </div>
+        <div class="panel-actions">
+          <button id="saveGameSlotBtn" class="panel-btn panel-btn-primary">Save Slot</button>
+          <button id="cancelGameSlotBtn" class="panel-btn">Cancel</button>
+        </div>
+        <div id="gameSlotMessage" class="panel-message"></div>
+      </div>
+    `;
+
+    setupGameSlotEditorListeners(index);
+  }
+
+  function setupGameSlotEditorListeners(index) {
+    const slot = GAME_SLOTS[index];
+    if (!slot) return;
+
+    const fileSelect = document.getElementById('gameFileSelect');
+    const titleInput = document.getElementById('gameTitleInput');
+    const descriptionInput = document.getElementById('gameDescriptionInput');
+    const iconInput = document.getElementById('gameIconInput');
+    const imageInput = document.getElementById('gameImageInput');
+    const thumbnailLinkInput = document.getElementById('gameThumbnailLinkInput');
+    const thumbnailLabelInput = document.getElementById('gameThumbnailLabelInput');
+    const statusSelect = document.getElementById('gameStatusSelect');
+    const saveBtn = document.getElementById('saveGameSlotBtn');
+    const cancelBtn = document.getElementById('cancelGameSlotBtn');
+    const messageEl = document.getElementById('gameSlotMessage');
+
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', () => {
+        closePanel();
+      });
+    }
+
+    if (!saveBtn) return;
+
+    saveBtn.addEventListener('click', async () => {
+      const updatedSlot = {
+        ...slot,
+        title: titleInput?.value.trim() || slot.title,
+        description: descriptionInput?.value.trim() || slot.description,
+        icon: iconInput?.value.trim(),
+        image: imageInput?.value.trim(),
+        thumbnailLink: thumbnailLinkInput?.value.trim(),
+        thumbnailLabel: thumbnailLabelInput?.value.trim(),
+        status: statusSelect?.value || slot.status,
+        file: fileSelect?.value.trim() || ''
+      };
+
+      GAME_SLOTS[index] = updatedSlot;
+      try {
+        await saveGameConfig(GAME_SLOTS);
+        messageEl.textContent = 'Slot saved successfully.';
+        messageEl.className = 'panel-message panel-message-success';
+        populateGames();
+      } catch (error) {
+        messageEl.textContent = 'Could not save slot. Please try again.';
+        messageEl.className = 'panel-message panel-message-error';
+      }
+    });
+  }
+
+  function renderManagePanel() {
+    const slotSelect = document.getElementById('manageSlotSelect');
+    const editor = document.getElementById('manageSlotEditor');
+
+    if (!slotSelect || !editor) return;
+
+    slotSelect.innerHTML = GAME_SLOTS.map((slot, index) => {
+      const title = slot.title || `Game Slot ${index + 1}`;
+      return `<option value="${index}">${slot.id || index + 1}: ${escapeHtml(title)}</option>`;
+    }).join('');
+
+    slotSelect.addEventListener('change', () => {
+      renderGameSlotEditor(Number(slotSelect.value));
+    });
+
+    renderGameSlotEditor(Number(slotSelect.value) || 0);
   }
 
   function closePanel() {
@@ -1017,6 +1221,11 @@
       });
     }
 
+    // Manage panel
+    if (panelType === 'manage') {
+      renderManagePanel();
+    }
+
     // Chat panel
     if (panelType === 'chat') {
       const chatInput = document.getElementById('chatInput');
@@ -1121,6 +1330,10 @@
     // Close panel when clicking overlay
     if (panelOverlay) {
       panelOverlay.addEventListener('click', closePanel);
+    }
+
+    if (manageGamesBtn) {
+      manageGamesBtn.addEventListener('click', () => openPanel('manage'));
     }
 
     // Open the Pro area inside an about:blank tab

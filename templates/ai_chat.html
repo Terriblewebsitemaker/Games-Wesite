@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Chatbot</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pro.css') }}">
+</head>
+<body>
+  <main class="container">
+    <header class="page-header">
+      <div class="page-header-inner">
+        <a href="/pro" class="btn btn-outline">← Back to Pro Area</a>
+        <div>
+          <h1>AI Chatbot</h1>
+          <p>Ask the AI a question and get a response from Gemini.</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="ai-chat-section">
+      {% if error %}
+        <div class="error-banner">{{ error }}</div>
+      {% endif %}
+
+      <form method="post" class="ai-chat-form">
+        <label for="message">Your message</label>
+        <textarea id="message" name="message" rows="5" class="panel-input" placeholder="Type your question or command here...">{{ message }}</textarea>
+        <button type="submit" class="btn btn-primary">Send to AI</button>
+      </form>
+
+      {% if ai_response %}
+        <section class="ai-chat-response">
+          <h2>AI Response</h2>
+          <div class="ai-chat-output">
+            <p>{{ ai_response }}</p>
+          </div>
+        </section>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>

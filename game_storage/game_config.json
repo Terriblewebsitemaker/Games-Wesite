@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "title": "Tuff Client 1.12.2 -_-",
+    "description": "Minecraft -_-",
+    "icon": "",
+    "image": "https://i.postimg.cc/nrMnwBfL/image-2026-06-02-191525587.png",
+    "thumbnailLink": "",
+    "thumbnailLabel": "",
+    "file": "Tuff_client.html",
+    "status": "available"
+  },
+  {
+    "id": 2,
+    "title": "PolyTrack",
+    "description": "PolyTrack game -_-",
+    "icon": "",
+    "image": "https://i.postimg.cc/0j3Kt93W/image-2026-06-02-193916628.png",
+    "thumbnailLink": "",
+    "thumbnailLabel": "",
+    "file": "Poly_Track.html",
+    "status": "available"
+  },
+  {
+    "id": 3,
+    "title": "Game Slot 3",
+    "description": "Add your game file from the game_storage folder to configure this slot.",
+    "icon": "",
+    "image": "",
+    "thumbnailLink": "",
+    "thumbnailLabel": "",
+    "file": "",
+    "status": "available"
+  },
+  {
+    "id": 4,
+    "title": "Game Slot 4",
+    "description": "Add your game file from the game_storage folder to configure this slot.",
+    "icon": "",
+    "image": "",
+    "thumbnailLink": "",
+    "thumbnailLabel": "",
+    "file": "",
+    "status": "available"
+  },
+  {
+    "id": 5,
+    "title": "Game Slot 5",
+    "description": "Add your game file from the game_storage folder to configure this slot.",
+    "icon": "",
+    "image": "",
+    "thumbnailLink": "",
+    "thumbnailLabel": "",
+    "file": "",
+    "status": "available"
+  },
+  {
+    "id": 6,
+    "title": "Game Slot 6",
+    "description": "Add your game file from the game_storage folder to configure this slot.",
+    "icon": "",
+    "image": "",
+    "thumbnailLink": "",
+    "thumbnailLabel": "",
+    "file": "",
+    "status": "available"
+  },
+  {
+    "id": 7,
+    "title": "Game Slot 7",
+    "description": "Add your game file from the game_storage folder to configure this slot.",
+    "icon": "",
+    "image": "",
+    "thumbnailLink": "",
+    "thumbnailLabel": "",
+    "file": "",
+    "status": "available"
+  },
+  {
+    "id": 8,
+    "title": "Game Slot 8",
+    "description": "Add your game file from the game_storage folder to configure this slot.",
+    "icon": "",
+    "image": "",
+    "thumbnailLink": "",
+    "thumbnailLabel": "",
+    "file": "",
+    "status": "available"
+  },
+  {
+    "id": 9,
+    "title": "Game Slot 9",
+    "description": "Add your game file from the game_storage folder to configure this slot.",
+    "icon": "",
+    "image": "",
+    "thumbnailLink": "",
+    "thumbnailLabel": "",
+    "file": "",
+    "status": "available"
+  },
+  {
+    "id": 10,
+    "title": "Game Slot 10",
+    "description": "Add your game file from the game_storage folder to configure this slot.",
+    "icon": "",
+    "image": "",
+    "thumbnailLink": "",
+    "thumbnailLabel": "",
+    "file": "",
+    "status": "available"
+  }
+]

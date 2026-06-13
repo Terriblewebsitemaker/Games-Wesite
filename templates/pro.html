@@ -20,7 +20,9 @@
           <h1>Pro Game Launcher</h1>
           <p class="pro-subtitle">Select a game to play or continue your progress</p>
         </div>
-        <div class="pro-actions"></div>
+        <div class="pro-actions">
+          <button id="manageGamesBtn" class="btn btn-outline">Manage Games</button>
+        </div>
       </header>
 
       <!-- Game Selection Section -->
@@ -59,6 +61,10 @@
             <button class="action-btn" data-panel="chat" aria-label="Chat" title="Chat">
               <span class="action-btn-icon"><img loading="lazy" decoding="async" src="https://i.postimg.cc/bvGH8F0D/image-2026-06-02-190558546.png" alt="Chat"></span>
               <span class="action-btn-tooltip">Chat</span>
+            </button>
+            <button id="openAiChatBtn" class="action-btn" aria-label="AI Chatbot" title="AI Chatbot" onclick="window.location.href='/ai-chat'">
+              <span class="action-btn-icon">🤖</span>
+              <span class="action-btn-tooltip">AI Chatbot</span>
             </button>
             <button class="action-btn" data-panel="store" aria-label="Store" title="Store">
               <span class="action-btn-icon"><img loading="lazy" decoding="async" src="https://i.postimg.cc/Cx2kvsyz/image-2026-06-02-190704922.png" alt="Store"></span>
