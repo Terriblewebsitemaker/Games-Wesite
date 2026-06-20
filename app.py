@@ -168,6 +168,39 @@ def ai_chat():
     return render_template('ai_chat.html', message=message, ai_response=ai_response, error=error)
 
 
+def get_website_chat_prompt(user_message=None):
+    base_prompt = (
+        "You are an AI assistant for a website that offers learning content, courses, and practice challenges. "
+        "Explain the site's features clearly, describe how visitors can use the courses, practice areas, and AI support, "
+        "and keep the tone friendly and helpful."
+    )
+    if user_message:
+        return f"{base_prompt}\n\nUser: {user_message}"
+    return f"{base_prompt}\n\nUser: Tell me about this website and how it helps learners."
+
+
+@app.route('/api/ai-chat', methods=['POST'])
+def api_ai_chat():
+    load_dotenv(os.path.join(BASE_DIR, 'Ai.chatbot', '.env'))
+
+    data = request.get_json(silent=True) or {}
+    message = (data.get('message') or '').strip()
+    if not message:
+        return jsonify({'success': False, 'error': 'Message is required.'}), 400
+
+    api_key = os.getenv('API_KEY')
+    if not api_key:
+        return jsonify({'success': False, 'error': 'API_KEY not configured. Please set it in Ai.chatbot/.env or as an environment variable.'}), 500
+
+    try:
+        ai_chatbot = load_ai_chatbot_module()
+        prompt = get_website_chat_prompt(message)
+        ai_response = ai_chatbot.chat_bot_with_gemini_api(prompt, api_key)
+        return jsonify({'success': True, 'response': ai_response})
+    except Exception as exc:
+        return jsonify({'success': False, 'error': str(exc)}), 500
+
+
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -210,7 +243,7 @@ def login():
 
     if request.method == "POST":
         password = request.form.get("password", "").strip()
-        if password == "ampro":
+        if password == "terriblewebsite":
             success = True
             # Set session for pro access
             session['authenticated'] = True

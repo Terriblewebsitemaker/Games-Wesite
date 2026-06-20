@@ -3,7 +3,7 @@
 //
 // ========================================
 // HOW TO ADD GAMES:
-// 1. Use the Manage Games button in the Pro Area.
+// 1. Use the Manage Games button in the Games Thing.
 // 2. Choose a file from the game_storage folder.
 // 3. Customize title, description, icon, image, status, and thumbnails.
 //
@@ -15,7 +15,7 @@
   'use strict';
 
   // Configuration
-  const VALID_CODE = 'ampro';
+  const VALID_CODE = 'terriblewebsite';
   let GAME_SLOTS = [
     {
       id: 1,
@@ -221,7 +221,7 @@
   function showAccessDenied() {
     // Access denied behavior has been disabled.
     accessDenied.classList.add('hidden');
-    console.warn('Access denied blocked; revealing Pro area instead.');
+    console.warn('Access denied blocked; revealing Games Thing instead.');
     revealPro();
   }
 
@@ -603,7 +603,7 @@
       content: `
         <div class="panel-section">
           <h4 class="panel-section-title">Manage Your Slots</h4>
-          <p>Select a slot to choose a game file from the game_storage folder and edit metadata for the Pro area.</p>
+          <p>Select a slot to choose a game file from the game_storage folder and edit metadata for the Games Thing.</p>
           <div class="panel-field">
             <label for="manageSlotSelect">Choose slot</label>
             <select id="manageSlotSelect" class="panel-input"></select>
@@ -1283,7 +1283,7 @@
       backToGames.addEventListener('click', closeGame);
     }
 
-    // Exit Pro Area button
+    // Exit Games Thing button
     if (closeBtn) {
       closeBtn.addEventListener('click', () => {
         window.location.replace('/');
@@ -1336,7 +1336,7 @@
       manageGamesBtn.addEventListener('click', () => openPanel('manage'));
     }
 
-    // Open the Pro area inside an about:blank tab
+    // Open the Games Thing inside an about:blank tab
     if (openBlankBtn) {
       openBlankBtn.addEventListener('click', () => {
         const newWin = window.open('about:blank', '_blank');
@@ -1347,14 +1347,14 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Pro Area</title>
+    <title>Games Thing</title>
     <style>
       html, body { margin: 0; height: 100%; overflow: hidden; }
       iframe { border: 0; width: 100%; height: 100vh; }
     </style>
   </head>
   <body>
-    <iframe src="${proUrl}" title="Pro Area"></iframe>
+    <iframe src="${proUrl}" title="Games Thing"></iframe>
   </body>
 </html>`);
         newWin.document.close();

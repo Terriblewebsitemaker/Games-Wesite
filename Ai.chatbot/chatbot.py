@@ -1,6 +1,7 @@
 import os
 from google import genai
-
+from dotenv import load_dotenv
+load_dotenv()
 
 def simple_chatbot_if_elif_else(user_input):
     if user_input == "hello":
@@ -13,7 +14,7 @@ def simple_chatbot_if_elif_else(user_input):
         return "Sorry, I don't understand."
     
 
-def chat_bot_with_gemini_api(user_input, api_key):
+def chat_bot_with_gemini_api(user_input, api_key=os.getenv("API_KEY")):
     if not api_key:
         raise RuntimeError(
             "API_KEY environment variable is required to call the Gemini API."

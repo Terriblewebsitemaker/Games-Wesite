@@ -10,13 +10,13 @@
   const termsLinks = document.querySelectorAll('#termsLink, #termsLinkFooter');
   const popup = document.getElementById('popup');
   const closePopup = document.getElementById('close-popup');
-  // Pro Area moved to separate page (pro.html); no in-page elements.
+  // Games Thing moved to separate page (pro.html); no in-page elements.
   const mobileToggle = document.getElementById('mobileToggle');
   const mainNav = document.querySelector('.main-nav');
   const animatedElements = document.querySelectorAll('.animate-fade-up, .animate-slide-up, .animate-slide-right, .animate-slide-left, .animate-scale-in');
   const counters = document.querySelectorAll('.count');
 
-  const SECRET = 'ampro';
+  const SECRET = 'terriblewebsite';
 
   function openModal() {
     if (!loginModal) return;
@@ -26,7 +26,7 @@
     if (username) username.focus();
   }
 
-  // No-op: Pro Area is on a separate page.
+  // No-op: Games Thing is on a separate page.
 
   function closeModal() {
     if (!loginModal) return;
@@ -98,12 +98,12 @@
             proWin.postMessage({ type: 'proAccess', code: SECRET }, location.origin);
           } catch (err) {
             // If posting fails, notify user
-            errorEl.textContent = 'Could not open Pro Area. Please try again.';
+            errorEl.textContent = 'Could not open Games Thing. Please try again.';
             return;
           }
           // Show a brief success animation/message in the current page
           errorEl.style.color = '#16a34a';
-          errorEl.textContent = 'Access granted — opening Pro Area...';
+          errorEl.textContent = 'Access granted — opening Games Thing...';
           // Close modal shortly after
           setTimeout(() => closeModal(), 600);
         }, 200);
@@ -113,9 +113,9 @@
     });
   }
 
-  // No in-page Pro Area handling — pro page is separate and receives an in-memory message.
+  // No in-page Games Thing handling — pro page is separate and receives an in-memory message.
 
-  // Nothing else required for Pro Area on index page.
+  // Nothing else required for Games Thing on index page.
 
   function animateCounters(entries, observer) {
     entries.forEach((entry) => {
@@ -169,4 +169,135 @@
       }
     }
   });
+
+  const chatToggleBtn = document.getElementById('chatToggleBtn');
+  const chatClearBtn = document.getElementById('chatClearBtn');
+  const chatCloseBtn = document.getElementById('chatCloseBtn');
+  const chatWidget = document.getElementById('chatWidget');
+  const chatForm = document.getElementById('chatForm');
+  const chatInput = document.getElementById('chatInput');
+  const chatBody = document.getElementById('chatBody');
+  const CHAT_HISTORY_KEY = 'siteAssistantChatHistory';
+  let chatInitialized = false;
+  let chatHistory = [];
+
+  function loadChatHistory() {
+    try {
+      const stored = localStorage.getItem(CHAT_HISTORY_KEY);
+      return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function saveChatHistory() {
+    try {
+      localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(chatHistory));
+    } catch (error) {
+      // ignore storage failures
+    }
+  }
+
+  function scrollChat() {
+    if (!chatBody) return;
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+
+  function renderChatEntry(type, text) {
+    if (!chatBody) return null;
+    const item = document.createElement('div');
+    item.className = `chat-message ${type}`;
+    item.textContent = text;
+    chatBody.appendChild(item);
+    return item;
+  }
+
+  function appendChatMessage(type, text) {
+    if (!chatBody) return null;
+    const item = renderChatEntry(type, text);
+    chatHistory.push({ type, text });
+    saveChatHistory();
+    scrollChat();
+    return item;
+  }
+
+  function renderChatHistory() {
+    if (!chatBody) return;
+    chatBody.innerHTML = '';
+    chatHistory.forEach((entry) => renderChatEntry(entry.type, entry.text));
+    scrollChat();
+  }
+
+  async function sendChatMessage(message) {
+    if (!message || !chatBody) return;
+
+    appendChatMessage('user', message);
+    const loadingItem = appendChatMessage('bot loading', 'Thinking...');
+    chatInput.value = '';
+
+    try {
+      const response = await fetch('/api/ai-chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        loadingItem.textContent = data.response || 'Sorry, no response was returned.';
+        loadingItem.classList.remove('loading');
+      } else {
+        loadingItem.textContent = data.error || 'Unable to get a response from the assistant.';
+        loadingItem.classList.remove('loading');
+      }
+    } catch (error) {
+      loadingItem.textContent = 'Network error while connecting to the assistant.';
+      loadingItem.classList.remove('loading');
+    }
+
+    scrollChat();
+  }
+
+  function openChat() {
+    if (!chatWidget) return;
+    chatWidget.classList.remove('hidden');
+
+    if (!chatInitialized) {
+      chatHistory = loadChatHistory();
+      renderChatHistory();
+
+      if (chatHistory.length === 0) {
+        appendChatMessage('bot', 'Hi! I’m your website assistant. Ask me about the site, its courses, and how to get started.');
+      }
+
+      chatInitialized = true;
+    }
+  }
+
+  function clearChatHistory() {
+    chatHistory = [];
+    saveChatHistory();
+    renderChatHistory();
+    appendChatMessage('bot', 'Chat history cleared. Ask anything to continue.');
+  }
+
+  function closeChat() {
+    if (!chatWidget) return;
+    chatWidget.classList.add('hidden');
+  }
+
+  if (chatToggleBtn) chatToggleBtn.addEventListener('click', openChat);
+  if (chatClearBtn) chatClearBtn.addEventListener('click', clearChatHistory);
+  if (chatCloseBtn) chatCloseBtn.addEventListener('click', closeChat);
+  if (chatForm) {
+    chatForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const text = (chatInput.value || '').trim();
+      if (text) {
+        sendChatMessage(text);
+      }
+    });
+  }
 });

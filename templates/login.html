@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login - Proest Learning</title>
-  <meta name="description" content="Login page for Proest Learning." />
+  <title>Login - Terrible Website</title>
+  <meta name="description" content="Login page for Terrible Website." />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="/">Proest Learning</a>
+      <a class="brand" href="/">Terrible Website</a>
       <nav class="main-nav" aria-label="Primary navigation">
         <a href="/">Home</a>
         <a href="/about">About</a>
@@ -27,7 +27,7 @@
       <div class="container">
         <div class="auth-card glass-card">
           <h1>Login</h1>
-          <p>Enter the password <strong>ampro</strong> to unlock the Pro Area.</p>
+          <p>Enter the password <strong>terriblewebsite</strong> to unlock the Games Thing.</p>
 
           {% if success %}
             <div class="alert alert-success">
@@ -55,22 +55,22 @@
   </main>
   {% if success %}
   <div class="alert alert-success">
-    <p>Success! Access granted. <button id="openProBtn" class="btn btn-primary">Open Pro Area</button></p>
+    <p>Success! Access granted. <button id="openProBtn" class="btn btn-primary">Open Games Thing</button></p>
   </div>
   <script>
     // When the user is successfully authenticated server-side, we allow them
-    // to open the Pro Area in a new window and send a one-time in-memory message.
+    // to open the Games Thing in a new window and send a one-time in-memory message.
     document.addEventListener('DOMContentLoaded', () => {
       const btn = document.getElementById('openProBtn');
       if (!btn) return;
       btn.addEventListener('click', () => {
         const proWin = window.open('/pro', '_blank');
         if (!proWin) {
-          alert('Popup blocked. Please allow popups to open the Pro Area.');
+          alert('Popup blocked. Please allow popups to open the Games Thing.');
           return;
         }
         setTimeout(() => {
-          proWin.postMessage({ type: 'proAccess', code: 'ampro' }, location.origin);
+          proWin.postMessage({ type: 'proAccess', code: 'terriblewebsite' }, location.origin);
         }, 200);
       });
     });
