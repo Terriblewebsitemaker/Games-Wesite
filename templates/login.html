@@ -53,28 +53,5 @@
       </div>
     </section>
   </main>
-  {% if success %}
-  <div class="alert alert-success">
-    <p>Success! Access granted. <button id="openProBtn" class="btn btn-primary">Open Games Thing</button></p>
-  </div>
-  <script>
-    // When the user is successfully authenticated server-side, we allow them
-    // to open the Games Thing in a new window and send a one-time in-memory message.
-    document.addEventListener('DOMContentLoaded', () => {
-      const btn = document.getElementById('openProBtn');
-      if (!btn) return;
-      btn.addEventListener('click', () => {
-        const proWin = window.open('/pro', '_blank');
-        if (!proWin) {
-          alert('Popup blocked. Please allow popups to open the Games Thing.');
-          return;
-        }
-        setTimeout(() => {
-          proWin.postMessage({ type: 'proAccess', code: 'terriblewebsite' }, location.origin);
-        }, 200);
-      });
-    });
-  </script>
-  {% endif %}
 </body>
 </html>

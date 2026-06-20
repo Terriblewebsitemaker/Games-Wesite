@@ -16,8 +16,6 @@
   const animatedElements = document.querySelectorAll('.animate-fade-up, .animate-slide-up, .animate-slide-right, .animate-slide-left, .animate-scale-in');
   const counters = document.querySelectorAll('.count');
 
-  const SECRET = 'terriblewebsite';
-
   function openModal() {
     if (!loginModal) return;
     loginModal.classList.remove('hidden');
@@ -73,47 +71,6 @@
       if (event.target === popup) hideTerms();
     });
   }
-
-  if (loginForm) {
-    const errorEl = document.createElement('div');
-    errorEl.id = 'loginError';
-    errorEl.style.color = '#ff4d4f';
-    errorEl.style.marginTop = '12px';
-    loginForm.appendChild(errorEl);
-
-    // Handle submit: validate code and open pro page via postMessage (in-memory only)
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const pwd = (document.getElementById('password') || {}).value || '';
-      if (pwd.trim().toLowerCase() === SECRET) {
-        // Open pro page in a new window/tab and send a one-time in-memory message
-        const proWin = window.open('/pro', '_blank');
-        if (!proWin) {
-          errorEl.textContent = 'Popup blocked. Please allow popups and try again.';
-          return;
-        }
-        // Post a short delay to ensure the new window is ready to receive messages
-        setTimeout(() => {
-          try {
-            proWin.postMessage({ type: 'proAccess', code: SECRET }, location.origin);
-          } catch (err) {
-            // If posting fails, notify user
-            errorEl.textContent = 'Could not open Games Thing. Please try again.';
-            return;
-          }
-          // Show a brief success animation/message in the current page
-          errorEl.style.color = '#16a34a';
-          errorEl.textContent = 'Access granted — opening Games Thing...';
-          // Close modal shortly after
-          setTimeout(() => closeModal(), 600);
-        }, 200);
-        return;
-      }
-      errorEl.textContent = 'Incorrect code — please try again.';
-    });
-  }
-
-  // No in-page Games Thing handling — pro page is separate and receives an in-memory message.
 
   // Nothing else required for Games Thing on index page.
 
