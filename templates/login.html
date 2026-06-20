@@ -26,14 +26,9 @@
     <section class="section login-section">
       <div class="container">
         <div class="auth-card glass-card">
-          <h1>Login</h1>
-          <p>Enter the password <strong>ampro</strong> to unlock the Pro Area.</p>
+          <h1>Admin Login</h1>
 
-          {% if success %}
-            <div class="alert alert-success">
-              <p>Success! You have been logged in. Return to the homepage to continue exploring.</p>
-            </div>
-          {% elif error %}
+          {% if error %}
             <div class="alert alert-error">
               <p>{{ error }}</p>
             </div>
@@ -53,28 +48,5 @@
       </div>
     </section>
   </main>
-  {% if success %}
-  <div class="alert alert-success">
-    <p>Success! Access granted. <button id="openProBtn" class="btn btn-primary">Open Pro Area</button></p>
-  </div>
-  <script>
-    // When the user is successfully authenticated server-side, we allow them
-    // to open the Pro Area in a new window and send a one-time in-memory message.
-    document.addEventListener('DOMContentLoaded', () => {
-      const btn = document.getElementById('openProBtn');
-      if (!btn) return;
-      btn.addEventListener('click', () => {
-        const proWin = window.open('/pro', '_blank');
-        if (!proWin) {
-          alert('Popup blocked. Please allow popups to open the Pro Area.');
-          return;
-        }
-        setTimeout(() => {
-          proWin.postMessage({ type: 'proAccess', code: 'ampro' }, location.origin);
-        }, 200);
-      });
-    });
-  </script>
-  {% endif %}
 </body>
 </html>
