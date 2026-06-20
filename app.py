@@ -1,5 +1,5 @@
 import flask
-from flask import Flask, render_template, request, session, jsonify, send_from_directory
+from flask import Flask, render_template, request, session, jsonify, send_from_directory, redirect
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from socketio import WSGIApp
 import sqlite3
@@ -11,8 +11,19 @@ from datetime import datetime
 from functools import wraps
 from dotenv import load_dotenv
 
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if not session.get('authenticated'):
+            return redirect('/login')
+        return f(*args, **kwargs)
+    return decorated
+
+load_dotenv()
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'ampro')
+
 app = Flask(__name__)
-app.secret_key = 'your-secret-key-here-change-in-production'
+app.secret_key = os.environ.get('SECRET_KEY', 'dev-only-change-in-production')
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 31536000  # Cache static assets for one year
 app.config['JSON_SORT_KEYS'] = False
 
@@ -123,6 +134,9 @@ def api_game_config():
     if request.method == 'GET':
         return jsonify(load_game_config())
 
+    if not session.get('authenticated'):
+        return jsonify({'error': 'Unauthorized'}), 401
+
     data = request.get_json(silent=True)
     if not isinstance(data, list):
         return jsonify({'error': 'Invalid game configuration format'}), 400
@@ -144,8 +158,6 @@ def load_ai_chatbot_module():
 
 @app.route('/ai-chat', methods=['GET', 'POST'])
 def ai_chat():
-    load_dotenv(os.path.join(BASE_DIR, 'Ai.chatbot', '.env'))
-
     message = ''
     ai_response = None
     error = None
@@ -205,22 +217,29 @@ def practice_challenges():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    error = None
-    success = False
+    if session.get('authenticated'):
+        return redirect('/pro')
 
+    error = None
     if request.method == "POST":
         password = request.form.get("password", "").strip()
-        if password == "ampro":
-            success = True
-            # Set session for pro access
+        if password == ADMIN_PASSWORD:
             session['authenticated'] = True
+            return redirect('/pro')
         else:
             error = "Invalid password. Please try again."
 
-    return render_template("login.html", error=error, success=success)
+    return render_template("login.html", error=error)
+
+
+@app.route('/logout')
+def logout():
+    session.pop('authenticated', None)
+    return redirect('/login')
 
 
 @app.route('/pro')
+@requires_auth
 def pro():
     # Get username from session or generate a random one
     username = session.get('username')

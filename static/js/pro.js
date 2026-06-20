@@ -14,8 +14,6 @@
 (function () {
   'use strict';
 
-  // Configuration
-  const VALID_CODE = 'ampro';
   let GAME_SLOTS = [
     {
       id: 1,
@@ -219,10 +217,7 @@
   // ========================================
 
   function showAccessDenied() {
-    // Access denied behavior has been disabled.
-    accessDenied.classList.add('hidden');
-    console.warn('Access denied blocked; revealing Pro area instead.');
-    revealPro();
+    window.location.replace('/login');
   }
 
   async function revealPro() {
@@ -1363,46 +1358,9 @@
   }
 
   // ========================================
-  // Message Handler (for access control)
-  // ========================================
-
-  function handleMessage(e) {
-    try {
-      if (e.origin !== location.origin) return;
-    } catch (err) {
-      // ignore cross-origin errors
-    }
-
-    const m = e.data || {};
-    if (m && m.type === 'proAccess' && typeof m.code === 'string') {
-      if (m.code.trim().toLowerCase() === VALID_CODE) {
-        revealPro();
-      } else {
-        showAccessDenied();
-      }
-    }
-  }
-
-  window.addEventListener('message', handleMessage, false);
-
-  // ========================================
   // Initialization
   // ========================================
 
-  function waitForOpenerMessage() {
-    if (!window.opener) {
-      // For development/testing, allow direct access
-      console.log('No opener detected. In production, access would be denied.');
-      // showAccessDenied(); // Uncomment for strict access control
-      revealPro(); // Remove this line in production
-      return;
-    }
-
-    setTimeout(() => {
-      if (!unlocked) showAccessDenied();
-    }, 900);
-  }
-
-  // Start the check when DOM is ready
-  document.addEventListener('DOMContentLoaded', waitForOpenerMessage);
+  // Server already verified authentication before serving this page.
+  document.addEventListener('DOMContentLoaded', revealPro);
 })();
